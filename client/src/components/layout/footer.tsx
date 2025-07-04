@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Cross, Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+import { Cross, Facebook, MessageCircle, Instagram, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -86,7 +86,7 @@ export default function Footer() {
                 href="#"
                 className="w-10 h-10 bg-orthodox-gold rounded-full flex items-center justify-center hover:bg-yellow-500 transition-colors"
               >
-                <Twitter className="text-orthodox-blue w-5 h-5" />
+                <MessageCircle className="text-orthodox-blue w-5 h-5" />
               </a>
               <a
                 href="#"
@@ -106,7 +106,7 @@ export default function Footer() {
 
         <div className="border-t border-orthodox-cream border-opacity-20 mt-8 pt-8 text-center">
           <p className="text-orthodox-cream">
-            © 2024 كتيبة أبطال مجمع نيقية. جميع الحقوق محفوظة.
+            © 2025 كتيبة أبطال مجمع نيقية. جميع الحقوق محفوظة.
           </p>
         </div>
       </div>
