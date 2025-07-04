@@ -1,14 +1,18 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trophy, Users, User, Edit, Trash2 } from "lucide-react";
+import EditMemberForm from "./edit-member-form";
 
 interface MemberCardProps {
   member: {
     id: number;
     fullName: string;
+    username: string;
+    email: string;
     role: string;
     worksCount: number;
     totalBeneficiaries: number;
+    createdAt: string;
   };
   onEdit?: (member: any) => void;
   onDelete?: (memberId: number) => void;
@@ -64,32 +68,20 @@ export default function MemberCard({ member, onEdit, onDelete }: MemberCardProps
           </div>
         </div>
         
-        {(onEdit || onDelete) && (
-          <div className="flex gap-2 mt-4 pt-4 border-t border-orthodox-gold/20">
-            {onEdit && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onEdit(member)}
-                className="flex-1 border-orthodox-blue text-orthodox-blue hover:bg-orthodox-blue hover:text-white"
-              >
-                <Edit className="w-4 h-4 mr-2" />
-                تعديل
-              </Button>
-            )}
-            {onDelete && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => onDelete(member.id)}
-                className="flex-1 border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
-              >
-                <Trash2 className="w-4 h-4 mr-2" />
-                حذف
-              </Button>
-            )}
-          </div>
-        )}
+        <div className="flex gap-2 mt-4 pt-4 border-t border-orthodox-gold/20">
+          <EditMemberForm member={member} />
+          {onDelete && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onDelete(member.id)}
+              className="flex-1 border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              حذف
+            </Button>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

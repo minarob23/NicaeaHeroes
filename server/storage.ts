@@ -5,6 +5,8 @@ export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, user: Partial<User>): Promise<User | undefined>;
+  deleteUser(id: number): Promise<boolean>;
   getAllUsers(): Promise<User[]>;
 
   // Work operations
@@ -194,6 +196,7 @@ export class MemStorage implements IStorage {
     const user: User = { 
       ...insertUser, 
       id, 
+      role: insertUser.role || 'member',
       createdAt: new Date() 
     };
     this.users.set(id, user);
@@ -204,15 +207,19 @@ export class MemStorage implements IStorage {
     return Array.from(this.users.values());
   }
 
-  async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.currentUserId++;
-    const user: User = { 
-      ...insertUser, 
-      id, 
-      createdAt: new Date() 
-    };
-    this.users.set(id, user);
-    return user;
+  async updateUser(id: number, userUpdate: Partial<User>): Promise<User | undefined> {
+    const existingUser = this.users.get(id);
+    if (!existingUser) {
+      return undefined;
+    }
+    
+    const updatedUser = { ...existingUser, ...userUpdate };
+    this.users.set(id, updatedUser);
+    return updatedUser;
+  }
+
+  async deleteUser(id: number): Promise<boolean> {
+    return this.users.delete(id);
   }
 
   // Work operations
@@ -243,6 +250,9 @@ export class MemStorage implements IStorage {
     const work: Work = { 
       ...insertWork, 
       id, 
+      authorId: insertWork.authorId || null,
+      beneficiariesCount: insertWork.beneficiariesCount || 0,
+      images: insertWork.images || null,
       approved: false,
       createdAt: new Date() 
     };
@@ -287,8 +297,9 @@ export class MemStorage implements IStorage {
     const news: News = { 
       ...insertNews, 
       id, 
+      authorId: insertNews.authorId || null,
       published: false,
-      relatedWorkIds: insertNews.relatedWorkIds || [],
+      relatedWorkIds: insertNews.relatedWorkIds || null,
       createdAt: new Date() 
     };
     this.news.set(id, news);
@@ -333,6 +344,7 @@ export class MemStorage implements IStorage {
     const event: Event = { 
       ...insertEvent, 
       id, 
+      location: insertEvent.location || null,
       createdAt: new Date() 
     };
     this.events.set(id, event);

@@ -130,9 +130,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return {
             id: user.id,
             fullName: user.fullName,
+            username: user.username,
+            email: user.email,
             role: user.role,
             worksCount: works.length,
-            totalBeneficiaries
+            totalBeneficiaries,
+            createdAt: user.createdAt
           };
         })
       );
@@ -153,6 +156,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
       } else {
         res.status(500).json({ message: "فشل في إنشاء العضو" });
       }
+    }
+  });
+
+  app.get("/api/members/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const user = await storage.getUser(id);
+      if (!user) {
+        return res.status(404).json({ message: "العضو غير موجود" });
+      }
+      
+      const works = await storage.getWorksByAuthor(user.id);
+      const totalBeneficiaries = works.reduce((sum, work) => sum + work.beneficiariesCount, 0);
+      
+      res.json({
+        ...user,
+        worksCount: works.length,
+        totalBeneficiaries
+      });
+    } catch (error) {
+      res.status(500).json({ message: "فشل في جلب العضو" });
+    }
+  });
+
+  app.put("/api/members/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      
+      // Validate the update data
+      const validatedData = insertUserSchema.partial().parse(updateData);
+      
+      const updatedUser = await storage.updateUser(id, validatedData);
+      if (!updatedUser) {
+        return res.status(404).json({ message: "العضو غير موجود" });
+      }
+      
+      res.json(updatedUser);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "فشل في تحديث العضو" });
+      }
+    }
+  });
+
+  app.delete("/api/members/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteUser(id);
+      if (!deleted) {
+        return res.status(404).json({ message: "العضو غير موجود" });
+      }
+      
+      res.json({ message: "تم حذف العضو بنجاح" });
+    } catch (error) {
+      res.status(500).json({ message: "فشل في حذف العضو" });
     }
   });
 
