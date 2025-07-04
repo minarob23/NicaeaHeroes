@@ -149,12 +149,12 @@ export default function Members() {
             variants={cardVariants}
             whileHover={{ scale: 1.05, y: -10 }}
           >
-            <Card className="bg-gradient-to-br from-orthodox-blue to-orthodox-navy text-white shadow-2xl border-0 overflow-hidden relative">
+            <Card className="bg-gradient-to-br from-teal-500 to-teal-700 text-white shadow-2xl border-0 overflow-hidden relative">
               <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white opacity-10"></div>
               <CardContent className="p-8 relative z-10">
                 <div className="flex items-center justify-between mb-4">
-                  <Users className="w-12 h-12 text-orthodox-gold" />
-                  <Shield className="w-8 h-8 text-orthodox-cream opacity-60" />
+                  <Users className="w-12 h-12 text-teal-100" />
+                  <Shield className="w-8 h-8 text-teal-100 opacity-60" />
                 </div>
                 <motion.div 
                   className="text-4xl font-bold mb-2"
@@ -164,7 +164,7 @@ export default function Members() {
                 >
                   {stats?.totalMembers || 0}
                 </motion.div>
-                <div className="text-orthodox-cream font-semibold">إجمالي الأعضاء</div>
+                <div className="text-teal-100 font-semibold">إجمالي الأعضاء</div>
               </CardContent>
             </Card>
           </motion.div>
