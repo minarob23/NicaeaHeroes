@@ -78,12 +78,12 @@ export default function AddNewsForm({ onSuccess }: AddNewsFormProps) {
 
   if (!isOpen) {
     return (
-      <Card className="bg-gradient-to-br from-orthodox-blue to-orthodox-navy text-white shadow-xl cursor-pointer hover:shadow-2xl transition-all" 
+      <Card className="bg-gradient-to-br from-orange-600 to-orange-800 text-white shadow-xl cursor-pointer hover:shadow-2xl transition-all" 
             onClick={() => setIsOpen(true)}>
         <CardContent className="p-8 text-center">
           <Plus className="w-16 h-16 mx-auto mb-4 text-orthodox-gold" />
           <h3 className="text-xl font-bold mb-2">إضافة خبر جديد</h3>
-          <p className="text-blue-100">انقر لإضافة خبر أو إعلان جديد</p>
+          <p className="text-orange-100">انقر لإضافة خبر أو إعلان جديد</p>
         </CardContent>
       </Card>
     );
