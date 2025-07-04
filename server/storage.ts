@@ -367,6 +367,140 @@ export class MemStorage implements IStorage {
   }
 }
 
-import { DatabaseStorage } from "./database-storage";
+// Smart storage selection based on environment
+async function createStorage(): Promise<IStorage> {
+  const databaseUrl = process.env.DATABASE_URL;
+  
+  if (databaseUrl) {
+    try {
+      // Try to use PostgreSQL database
+      const { DatabaseStorage } = await import("./database-storage");
+      const dbStorage = new DatabaseStorage();
+      
+      // Test connection
+      await dbStorage.getAllUsers();
+      console.log("✅ Connected to PostgreSQL database");
+      return dbStorage;
+    } catch (error: any) {
+      console.error("❌ Failed to connect to PostgreSQL:", error.message);
+      console.log("🔄 Falling back to file storage...");
+    }
+  } else {
+    console.log("📝 No DATABASE_URL found, using file storage");
+  }
+  
+  // Fallback to file storage
+  const { FileStorage } = await import("./storage-fallback");
+  const fileStorage = new FileStorage();
+  
+  // Initialize with sample data if files don't exist
+  try {
+    const users = await fileStorage.getAllUsers();
+    if (users.length === 0) {
+      console.log("🌱 Initializing with sample data...");
+      await initializeSampleData(fileStorage);
+    }
+  } catch (error) {
+    console.error("Error initializing sample data:", error);
+  }
+  
+  return fileStorage;
+}
 
-export const storage = new DatabaseStorage();
+async function initializeSampleData(storage: IStorage) {
+  // Create sample users
+  const sampleUsers = [
+    {
+      username: "john_peter",
+      password: "password123",
+      fullName: "يوحنا بطرس",
+      email: "john@nicaea.org",
+      role: "leader"
+    },
+    {
+      username: "mary_joseph", 
+      password: "password123",
+      fullName: "مريم يوسف",
+      email: "mary@nicaea.org",
+      role: "admin"
+    },
+    {
+      username: "michael_david",
+      password: "password123", 
+      fullName: "ميخائيل داود",
+      email: "michael@nicaea.org",
+      role: "member"
+    }
+  ];
+
+  const createdUsers = [];
+  for (const userData of sampleUsers) {
+    const user = await storage.createUser(userData);
+    createdUsers.push(user);
+  }
+
+  // Create sample works
+  const sampleWorks = [
+    {
+      title: "حملة إطعام الأيتام",
+      description: "توزيع وجبات ساخنة على الأطفال الأيتام في دار الرعاية",
+      category: "خدمة اجتماعية",
+      authorId: createdUsers[0].id,
+      workDate: new Date('2024-12-15'),
+      beneficiariesCount: 50
+    },
+    {
+      title: "زيارة دار المسنين",
+      description: "قضاء وقت مع كبار السن وتقديم الدعم النفسي",
+      category: "زيارات", 
+      authorId: createdUsers[1].id,
+      workDate: new Date('2024-12-18'),
+      beneficiariesCount: 30
+    },
+    {
+      title: "توزيع الملابس الشتوية",
+      description: "توزيع ملابس شتوية دافئة على الأسر المحتاجة",
+      category: "مساعدات",
+      authorId: createdUsers[2].id,
+      workDate: new Date('2024-12-20'),
+      beneficiariesCount: 25
+    }
+  ];
+
+  for (const workData of sampleWorks) {
+    await storage.createWork(workData);
+  }
+
+  // Create sample news
+  const sampleNews = [
+    {
+      title: "إعلان عن حملة خيرية جديدة",
+      content: "نعلن عن بدء حملة خيرية جديدة لمساعدة الأسر المحتاجة في فصل الشتاء",
+      excerpt: "حملة خيرية شتوية للأسر المحتاجة",
+      category: "إعلان مهم",
+      authorId: createdUsers[0].id,
+      published: true
+    },
+    {
+      title: "نتائج الأعمال الخيرية لشهر ديسمبر",
+      content: "تم إنجاز عدد كبير من الأعمال الخيرية خلال شهر ديسمبر",
+      excerpt: "ملخص إنجازات شهر ديسمبر",
+      category: "أخبار",
+      authorId: createdUsers[1].id,
+      published: true
+    }
+  ];
+
+  for (const newsData of sampleNews) {
+    await storage.createNews(newsData);
+  }
+
+  console.log("✅ Sample data initialized");
+}
+
+// Create and export storage instance
+export const storagePromise = createStorage();
+
+// For compatibility with existing code
+export let storage: IStorage;
+storagePromise.then(s => storage = s);

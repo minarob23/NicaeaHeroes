@@ -1,10 +1,13 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import { storagePromise } from "./storage";
 import { insertWorkSchema, insertNewsSchema, insertEventSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize storage
+  const storage = await storagePromise;
+  
   // Works routes
   app.get("/api/works", async (req, res) => {
     try {

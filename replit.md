@@ -124,6 +124,10 @@ Located in `shared/schema.ts`:
   - Created Docker and deployment configurations
   - Added comprehensive deployment documentation
   - Set up backup and restore scripts
+  - Added intelligent storage fallback system (PostgreSQL → File storage)
+  - Created Windows-specific setup guides and batch scripts
+  - Added file-based storage for offline/local development
+  - Implemented automatic storage selection based on environment
 
 ## User Preferences
 

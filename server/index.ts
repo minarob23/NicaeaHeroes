@@ -74,8 +74,17 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // Initialize database with sample data if needed
-  await seedDatabase();
+  // Initialize database with sample data if needed (only if DATABASE_URL is available)
+  if (process.env.DATABASE_URL) {
+    try {
+      await seedDatabase();
+    } catch (error) {
+      console.error("Database seeding failed:", error);
+      console.log("Continuing without seeding...");
+    }
+  } else {
+    console.log("No DATABASE_URL found, skipping database seeding");
+  }
   
   const server = await registerRoutes(app);
 
