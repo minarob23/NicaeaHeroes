@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
-import { UserPlus, Mail, User, Shield } from "lucide-react";
+import { UserPlus, Mail, User, Shield, Trophy } from "lucide-react";
 
 export default function AddMemberForm() {
   const [formData, setFormData] = useState({
@@ -15,7 +15,8 @@ export default function AddMemberForm() {
     fullName: "",
     email: "",
     password: "",
-    role: "member"
+    role: "member",
+    worksCount: 0
   });
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -38,7 +39,7 @@ export default function AddMemberForm() {
         title: "تم بنجاح",
         description: "تم إضافة العضو الجديد بنجاح",
       });
-      setFormData({ username: "", fullName: "", email: "", password: "", role: "member" });
+      setFormData({ username: "", fullName: "", email: "", password: "", role: "member", worksCount: 0 });
       setIsOpen(false);
     },
     onError: () => {
@@ -146,6 +147,21 @@ export default function AddMemberForm() {
                 <SelectItem value="admin">مدير</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div>
+            <Label htmlFor="worksCount" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              عدد الأعمال
+            </Label>
+            <Input
+              id="worksCount"
+              type="number"
+              min="0"
+              value={formData.worksCount}
+              onChange={(e) => setFormData({ ...formData, worksCount: parseInt(e.target.value) || 0 })}
+              className="mt-1"
+            />
           </div>
 
           <div className="flex gap-2">

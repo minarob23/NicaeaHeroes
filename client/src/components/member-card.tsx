@@ -1,5 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Trophy, Users, User } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Trophy, Users, User, Edit, Trash2 } from "lucide-react";
 
 interface MemberCardProps {
   member: {
@@ -9,9 +10,11 @@ interface MemberCardProps {
     worksCount: number;
     totalBeneficiaries: number;
   };
+  onEdit?: (member: any) => void;
+  onDelete?: (memberId: number) => void;
 }
 
-export default function MemberCard({ member }: MemberCardProps) {
+export default function MemberCard({ member, onEdit, onDelete }: MemberCardProps) {
   const getInitials = (name: string) => {
     return name
       .split(" ")
@@ -60,6 +63,33 @@ export default function MemberCard({ member }: MemberCardProps) {
             <span className="text-orthodox-navy font-medium">{member.totalBeneficiaries} مستفيد</span>
           </div>
         </div>
+        
+        {(onEdit || onDelete) && (
+          <div className="flex gap-2 mt-4 pt-4 border-t border-orthodox-gold/20">
+            {onEdit && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onEdit(member)}
+                className="flex-1 border-orthodox-blue text-orthodox-blue hover:bg-orthodox-blue hover:text-white"
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                تعديل
+              </Button>
+            )}
+            {onDelete && (
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onDelete(member.id)}
+                className="flex-1 border-red-500 text-red-500 hover:bg-red-500 hover:text-white"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                حذف
+              </Button>
+            )}
+          </div>
+        )}
       </CardContent>
     </Card>
   );

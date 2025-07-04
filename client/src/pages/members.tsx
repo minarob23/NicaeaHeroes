@@ -1,7 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import MemberCard from "@/components/member-card";
 import AddMemberForm from "@/components/add-member-form";
+import { useToast } from "@/hooks/use-toast";
 import { Users, Trophy, Award, Target, Shield, Star, Crown, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -13,6 +14,48 @@ export default function Members() {
   const { data: stats } = useQuery({
     queryKey: ["/api/stats"],
   });
+
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const deleteMemberMutation = useMutation({
+    mutationFn: async (memberId: number) => {
+      const response = await fetch(`/api/members/${memberId}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) throw new Error("فشل في حذف العضو");
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/members"] });
+      queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
+      toast({
+        title: "تم الحذف",
+        description: "تم حذف العضو بنجاح",
+      });
+    },
+    onError: () => {
+      toast({
+        title: "خطأ",
+        description: "فشل في حذف العضو",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleEditMember = (member: any) => {
+    // For now, just show a message - full edit functionality can be implemented later
+    toast({
+      title: "تعديل العضو",
+      description: `سيتم تطوير صفحة تعديل ${member.fullName} قريباً`,
+    });
+  };
+
+  const handleDeleteMember = (memberId: number) => {
+    if (confirm("هل أنت متأكد من حذف هذا العضو؟")) {
+      deleteMemberMutation.mutate(memberId);
+    }
+  };
 
   // Animation variants
   const fadeInUp = {
@@ -148,7 +191,7 @@ export default function Members() {
         {/* Animated Stats Cards */}
         {stats && (
           <motion.div 
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
             variants={staggerContainer}
             initial="hidden"
             animate="visible"
@@ -221,39 +264,7 @@ export default function Members() {
               </Card>
             </motion.div>
 
-            <motion.div
-              variants={fadeInUp}
-              whileHover={{ scale: 1.05, y: -10 }}
-            >
-              <Card className="bg-gradient-to-br from-orthodox-light-blue to-blue-500 text-white shadow-2xl border-0 overflow-hidden relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-orthodox-gold opacity-20"></div>
-                <CardContent className="p-8 text-center relative z-10">
-                  <motion.div
-                    animate={{
-                      scale: [1, 1.2, 1],
-                      rotate: [0, 360],
-                    }}
-                    transition={{
-                      duration: 4,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                    className="mb-4"
-                  >
-                    <Target className="w-16 h-16 mx-auto" />
-                  </motion.div>
-                  <motion.div 
-                    className="text-3xl font-bold mb-2"
-                    initial={{ opacity: 0, scale: 0.5 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 0.9 }}
-                  >
-                    {stats.totalBeneficiaries || 0}
-                  </motion.div>
-                  <div className="font-semibold">إجمالي المستفيدين</div>
-                </CardContent>
-              </Card>
-            </motion.div>
+
 
             <motion.div
               variants={fadeInUp}
@@ -366,7 +377,11 @@ export default function Members() {
                 whileHover={{ scale: 1.03, y: -8 }}
                 transition={{ duration: 0.3 }}
               >
-                <MemberCard member={member} />
+                <MemberCard 
+                  member={member} 
+                  onEdit={handleEditMember}
+                  onDelete={handleDeleteMember}
+                />
               </motion.div>
             ))}
           </motion.div>

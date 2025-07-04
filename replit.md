@@ -96,7 +96,15 @@ Located in `shared/schema.ts`:
 
 ## Changelog
 
-- July 04, 2025. Initial setup
+- July 04, 2025. Initial setup and migration completed
+- July 04, 2025. Enhanced member management:
+  - Added edit and delete buttons to member cards
+  - Improved member card visibility with better contrast
+  - Removed "Total Beneficiaries" statistics box
+  - Added work count field to member registration form
+- July 04, 2025. Enhanced news system:
+  - Added ability to link works to news articles
+  - Created comprehensive news creation form with work selection
 
 ## User Preferences
 
