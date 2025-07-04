@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +10,15 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { Trophy, Users, Calendar, Plus, Tag } from "lucide-react";
 
-const [formData, setFormData] = useState({
+interface WorkRegistrationFormProps {
+  onSuccess?: () => void;
+}
+
+export default function WorkRegistrationForm({ onSuccess }: WorkRegistrationFormProps) {
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const [formData, setFormData] = useState({
     title: "",
     description: "",
     category: "",
@@ -17,11 +26,47 @@ const [formData, setFormData] = useState({
     beneficiariesCount: 0,
     authorId: 1 // This should come from authentication context
   });
-  const [isOpen, setIsOpen] = useState(false);
   const [showNewCategory, setShowNewCategory] = useState(false);
   const [newCategory, setNewCategory] = useState("");
 
-const handleSubmit = (e: React.FormEvent) => {
+  const addWorkMutation = useMutation({
+    mutationFn: async (workData: any) => {
+      const response = await fetch("/api/works", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(workData),
+      });
+      if (!response.ok) throw new Error("Failed to add work");
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "تم بنجاح",
+        description: "تم تسجيل العمل بنجاح",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/works"] });
+      setFormData({
+        title: "",
+        description: "",
+        category: "",
+        workDate: "",
+        beneficiariesCount: 0,
+        authorId: 1
+      });
+      setShowNewCategory(false);
+      setNewCategory("");
+      onSuccess?.();
+    },
+    onError: (error) => {
+      toast({
+        title: "خطأ",
+        description: "حدث خطأ أثناء تسجيل العمل",
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const finalCategory = showNewCategory && newCategory ? newCategory : formData.category;
     addWorkMutation.mutate({
@@ -41,7 +86,49 @@ const handleSubmit = (e: React.FormEvent) => {
       setFormData({ ...formData, category: value });
     }
   };
-<div>
+
+  return (
+    <Card className="w-full max-w-2xl mx-auto">
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2 text-orthodox-blue font-amiri">
+          <Trophy className="w-6 h-6" />
+          سجل عملك البطولي
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <Label htmlFor="title" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              عنوان العمل
+            </Label>
+            <Input
+              id="title"
+              value={formData.title}
+              onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              placeholder="أدخل عنوان العمل"
+              className="mt-1"
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="description" className="flex items-center gap-2">
+              <Trophy className="w-4 h-4" />
+              وصف العمل
+            </Label>
+            <Textarea
+              id="description"
+              value={formData.description}
+              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+              placeholder="اكتب وصفاً مفصلاً للعمل"
+              className="mt-1"
+              rows={4}
+              required
+            />
+          </div>
+
+          <div>
             <Label htmlFor="category" className="flex items-center gap-2">
               <Tag className="w-4 h-4" />
               الفئة
@@ -51,12 +138,11 @@ const handleSubmit = (e: React.FormEvent) => {
                 <SelectValue placeholder="اختر فئة العمل" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="تعليم">تعليم وثقافة</SelectItem>
-                <SelectItem value="صحة">الصحة والعافية</SelectItem>
-                <SelectItem value="إغاثة">الإغاثة والمساعدات</SelectItem>
-                <SelectItem value="بيئة">البيئة والنظافة</SelectItem>
-                <SelectItem value="اجتماعي">العمل الاجتماعي</SelectItem>
-                <SelectItem value="ديني">الأنشطة الدينية</SelectItem>
+                <SelectItem value="أعمال خيرية">أعمال خيرية</SelectItem>
+                <SelectItem value="أعمال تطوعية">أعمال تطوعية</SelectItem>
+                <SelectItem value="أعمال كنسية">أعمال كنسية</SelectItem>
+                <SelectItem value="أعمال اجتماعية">أعمال اجتماعية</SelectItem>
+                <SelectItem value="أعمال تعليمية">أعمال تعليمية</SelectItem>
                 <SelectItem value="new_category">
                   <div className="flex items-center gap-2">
                     <Plus className="w-4 h-4" />
@@ -75,3 +161,48 @@ const handleSubmit = (e: React.FormEvent) => {
               />
             )}
           </div>
+
+          <div>
+            <Label htmlFor="workDate" className="flex items-center gap-2">
+              <Calendar className="w-4 h-4" />
+              تاريخ العمل
+            </Label>
+            <Input
+              id="workDate"
+              type="date"
+              value={formData.workDate}
+              onChange={(e) => setFormData({ ...formData, workDate: e.target.value })}
+              className="mt-1"
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="beneficiariesCount" className="flex items-center gap-2">
+              <Users className="w-4 h-4" />
+              عدد المستفيدين
+            </Label>
+            <Input
+              id="beneficiariesCount"
+              type="number"
+              min="0"
+              value={formData.beneficiariesCount}
+              onChange={(e) => setFormData({ ...formData, beneficiariesCount: parseInt(e.target.value) || 0 })}
+              placeholder="عدد الأشخاص المستفيدين"
+              className="mt-1"
+              required
+            />
+          </div>
+
+          <Button 
+            type="submit" 
+            className="w-full bg-orthodox-gold hover:bg-yellow-500 text-orthodox-blue font-bold"
+            disabled={addWorkMutation.isPending}
+          >
+            {addWorkMutation.isPending ? "جاري التسجيل..." : "سجل العمل"}
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  );
+}
