@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import NewsCard from "@/components/news-card";
 import AddEventForm from "@/components/add-event-form";
+import AddNewsForm from "@/components/add-news-form";
 import { Calendar, Clock, MapPin, Newspaper, Bell, Star, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -221,6 +222,13 @@ export default function News() {
             آخر الأخبار
           </motion.h2>
 
+          <motion.div
+            className="mb-8"
+            variants={fadeInUp}
+          >
+            <AddNewsForm />
+          </motion.div>
+
           {isLoading ? (
             <motion.div 
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -267,7 +275,7 @@ export default function News() {
                   variants={fadeInUp}
                   whileHover={{ scale: 1.03, y: -5 }}
                 >
-                  <NewsCard news={article} />
+                  <NewsCard article={article} />
                 </motion.div>
               ))}
             </motion.div>

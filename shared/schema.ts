@@ -32,6 +32,7 @@ export const news = pgTable("news", {
   excerpt: text("excerpt").notNull(),
   category: text("category").notNull(),
   authorId: integer("author_id").references(() => users.id),
+  relatedWorkIds: integer("related_work_ids").array(),
   published: boolean("published").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });

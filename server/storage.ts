@@ -151,7 +151,7 @@ export class MemStorage implements IStorage {
 
     sampleNews.forEach(news => {
       const id = this.currentNewsId++;
-      const newNews = { ...news, id, createdAt: new Date() };
+      const newNews = { ...news, id, relatedWorkIds: [], createdAt: new Date() };
       this.news.set(id, newNews);
     });
 
@@ -288,6 +288,7 @@ export class MemStorage implements IStorage {
       ...insertNews, 
       id, 
       published: false,
+      relatedWorkIds: insertNews.relatedWorkIds || [],
       createdAt: new Date() 
     };
     this.news.set(id, news);
