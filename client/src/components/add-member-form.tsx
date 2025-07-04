@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { UserPlus, Mail, User, Shield, Trophy } from "lucide-react";
+import { UserPlus, Mail, User, Shield, Trophy, Users, X } from "lucide-react";
 
 export default function AddMemberForm() {
   const [formData, setFormData] = useState({
@@ -16,7 +17,8 @@ export default function AddMemberForm() {
     email: "",
     password: "",
     role: "member",
-    worksCount: 0
+    worksCount: 0,
+    totalBeneficiaries: 0
   });
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -39,7 +41,15 @@ export default function AddMemberForm() {
         title: "تم بنجاح",
         description: "تم إضافة العضو الجديد بنجاح",
       });
-      setFormData({ username: "", fullName: "", email: "", password: "", role: "member", worksCount: 0 });
+      setFormData({ 
+        username: "", 
+        fullName: "", 
+        email: "", 
+        password: "", 
+        role: "member", 
+        worksCount: 0,
+        totalBeneficiaries: 0
+      });
       setIsOpen(false);
     },
     onError: () => {
@@ -56,31 +66,29 @@ export default function AddMemberForm() {
     addMemberMutation.mutate(formData);
   };
 
-  if (!isOpen) {
-    return (
-      <Card className="bg-gradient-to-br from-teal-600 to-teal-800 text-white shadow-xl cursor-pointer hover:shadow-2xl transition-all" 
-            onClick={() => setIsOpen(true)}>
-        <CardContent className="p-8 text-center">
-          <UserPlus className="w-16 h-16 mx-auto mb-4 text-orthodox-gold" />
-          <h3 className="text-xl font-bold mb-2">إضافة عضو جديد</h3>
-          <p className="text-orthodox-cream">انقر لإضافة عضو جديد إلى الفريق</p>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
-    <Card className="bg-gradient-to-br from-white to-orthodox-cream shadow-xl">
-      <CardHeader>
-        <CardTitle className="text-orthodox-blue flex items-center gap-2">
-          <UserPlus className="w-5 h-5" />
-          إضافة عضو جديد
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Card className="bg-gradient-to-br from-teal-600 to-teal-800 text-white shadow-xl cursor-pointer hover:shadow-2xl transition-all">
+          <CardContent className="p-8 text-center">
+            <UserPlus className="w-16 h-16 mx-auto mb-4 text-orthodox-gold" />
+            <h3 className="text-xl font-bold mb-2">إضافة عضو جديد</h3>
+            <p className="text-teal-100">انقر لإضافة عضو جديد إلى الفريق</p>
+          </CardContent>
+        </Card>
+      </DialogTrigger>
+      
+      <DialogContent className="max-w-md mx-auto bg-gradient-to-br from-white to-orthodox-cream border-0 shadow-2xl">
+        <DialogHeader className="relative">
+          <DialogTitle className="text-orthodox-blue flex items-center gap-2 text-xl font-bold">
+            <UserPlus className="w-6 h-6" />
+            إضافة عضو جديد
+          </DialogTitle>
+        </DialogHeader>
+        
+        <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div>
-            <Label htmlFor="fullName" className="flex items-center gap-2">
+            <Label htmlFor="fullName" className="flex items-center gap-2 text-orthodox-navy font-semibold">
               <User className="w-4 h-4" />
               الاسم الكامل
             </Label>
@@ -89,23 +97,25 @@ export default function AddMemberForm() {
               value={formData.fullName}
               onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
               required
-              className="mt-1"
+              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
+              placeholder="أدخل الاسم الكامل"
             />
           </div>
 
           <div>
-            <Label htmlFor="username">اسم المستخدم</Label>
+            <Label htmlFor="username" className="text-orthodox-navy font-semibold">اسم المستخدم</Label>
             <Input
               id="username"
               value={formData.username}
               onChange={(e) => setFormData({ ...formData, username: e.target.value })}
               required
-              className="mt-1"
+              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
+              placeholder="أدخل اسم المستخدم"
             />
           </div>
 
           <div>
-            <Label htmlFor="email" className="flex items-center gap-2">
+            <Label htmlFor="email" className="flex items-center gap-2 text-orthodox-navy font-semibold">
               <Mail className="w-4 h-4" />
               البريد الإلكتروني
             </Label>
@@ -115,29 +125,31 @@ export default function AddMemberForm() {
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
               required
-              className="mt-1"
+              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
+              placeholder="أدخل البريد الإلكتروني"
             />
           </div>
 
           <div>
-            <Label htmlFor="password">كلمة المرور</Label>
+            <Label htmlFor="password" className="text-orthodox-navy font-semibold">كلمة المرور</Label>
             <Input
               id="password"
               type="password"
               value={formData.password}
               onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               required
-              className="mt-1"
+              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
+              placeholder="أدخل كلمة المرور"
             />
           </div>
 
           <div>
-            <Label htmlFor="role" className="flex items-center gap-2">
+            <Label htmlFor="role" className="flex items-center gap-2 text-orthodox-navy font-semibold">
               <Shield className="w-4 h-4" />
               الدور
             </Label>
             <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
-              <SelectTrigger className="mt-1">
+              <SelectTrigger className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -150,7 +162,7 @@ export default function AddMemberForm() {
           </div>
 
           <div>
-            <Label htmlFor="worksCount" className="flex items-center gap-2">
+            <Label htmlFor="worksCount" className="flex items-center gap-2 text-orthodox-navy font-semibold">
               <Trophy className="w-4 h-4" />
               عدد الأعمال
             </Label>
@@ -160,15 +172,32 @@ export default function AddMemberForm() {
               min="0"
               value={formData.worksCount}
               onChange={(e) => setFormData({ ...formData, worksCount: parseInt(e.target.value) || 0 })}
-              className="mt-1"
+              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
+              placeholder="عدد الأعمال المنجزة"
             />
           </div>
 
-          <div className="flex gap-2">
+          <div>
+            <Label htmlFor="totalBeneficiaries" className="flex items-center gap-2 text-orthodox-navy font-semibold">
+              <Users className="w-4 h-4" />
+              عدد المستفيدين
+            </Label>
+            <Input
+              id="totalBeneficiaries"
+              type="number"
+              min="0"
+              value={formData.totalBeneficiaries}
+              onChange={(e) => setFormData({ ...formData, totalBeneficiaries: parseInt(e.target.value) || 0 })}
+              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
+              placeholder="إجمالي عدد المستفيدين"
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
             <Button 
               type="submit" 
               disabled={addMemberMutation.isPending}
-              className="bg-orthodox-blue hover:bg-orthodox-navy"
+              className="flex-1 bg-orthodox-blue hover:bg-orthodox-navy text-white font-semibold"
             >
               {addMemberMutation.isPending ? "جاري الإضافة..." : "إضافة العضو"}
             </Button>
@@ -176,12 +205,13 @@ export default function AddMemberForm() {
               type="button" 
               variant="outline" 
               onClick={() => setIsOpen(false)}
+              className="border-orthodox-gold text-orthodox-blue hover:bg-orthodox-gold/10"
             >
               إلغاء
             </Button>
           </div>
         </form>
-      </CardContent>
-    </Card>
+      </DialogContent>
+    </Dialog>
   );
 }
