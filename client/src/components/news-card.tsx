@@ -5,22 +5,21 @@ import { formatDistanceToNow } from "date-fns";
 import { ar } from "date-fns/locale";
 
 interface NewsCardProps {
-  article: {
-    id: number;
-    title: string;
-    content: string;
-    excerpt: string;
-    category: string;
-    author?: {
-      id: number;
-      fullName: string;
-    };
-    createdAt: string;
-  };
+  article: any;
 }
 
 export default function NewsCard({ article }: NewsCardProps) {
-  const timeAgo = formatDistanceToNow(new Date(article.createdAt), {
+  if (!article) {
+    return null;
+  }
+
+  const createdAt = article.createdAt ? new Date(article.createdAt) : new Date();
+  const title = article.title || 'بدون عنوان';
+  const excerpt = article.excerpt || 'لا يوجد وصف متاح';
+  const category = article.category || 'عام';
+  const authorName = article.author?.fullName || 'غير محدد';
+
+  const timeAgo = formatDistanceToNow(createdAt, {
     addSuffix: true,
     locale: ar,
   });
@@ -44,25 +43,25 @@ export default function NewsCard({ article }: NewsCardProps) {
     <Card className="hover:shadow-xl transition-shadow">
       <div className="h-64 bg-gradient-to-br from-orthodox-blue to-orthodox-navy rounded-t-lg flex items-center justify-center">
         <div className="text-orthodox-gold text-6xl font-bold font-amiri">
-          {article.title.charAt(0)}
+          {title.charAt(0)}
         </div>
       </div>
       <CardContent className="p-6">
         <div className="flex items-center justify-between mb-3">
-          <Badge className={getCategoryColor(article.category)}>
-            {article.category}
+          <Badge className={getCategoryColor(category)}>
+            {category}
           </Badge>
           <span className="text-gray-500 text-sm">{timeAgo}</span>
         </div>
-        
-        <h3 className="text-2xl font-bold text-orthodox-blue mb-3">{article.title}</h3>
-        <p className="text-gray-600 mb-4 line-clamp-3">{article.excerpt}</p>
-        
+
+        <h3 className="text-2xl font-bold text-orthodox-blue mb-3">{title}</h3>
+        <p className="text-gray-600 mb-4 line-clamp-3">{excerpt}</p>
+
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-reverse space-x-2">
             <User className="w-4 h-4 text-orthodox-gold" />
             <span className="text-sm text-gray-600">
-              {article.author?.fullName || "غير معروف"}
+              {authorName}
             </span>
           </div>
           <button className="text-orthodox-blue hover:text-orthodox-gold font-semibold transition-colors">
