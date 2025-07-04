@@ -1,0 +1,38 @@
+[
+  {
+    "title": "حملة إطعام الأيتام",
+    "description": "توزيع وجبات ساخنة على الأطفال الأيتام في دار الرعاية",
+    "category": "خدمة اجتماعية",
+    "authorId": 1,
+    "workDate": "2024-12-15T00:00:00.000Z",
+    "beneficiariesCount": 50,
+    "id": 1,
+    "images": null,
+    "approved": false,
+    "createdAt": "2025-07-04T22:56:04.699Z"
+  },
+  {
+    "title": "زيارة دار المسنين",
+    "description": "قضاء وقت مع كبار السن وتقديم الدعم النفسي",
+    "category": "زيارات",
+    "authorId": 2,
+    "workDate": "2024-12-18T00:00:00.000Z",
+    "beneficiariesCount": 30,
+    "id": 2,
+    "images": null,
+    "approved": false,
+    "createdAt": "2025-07-04T22:56:04.699Z"
+  },
+  {
+    "title": "توزيع الملابس الشتوية",
+    "description": "توزيع ملابس شتوية دافئة على الأسر المحتاجة",
+    "category": "مساعدات",
+    "authorId": 3,
+    "workDate": "2024-12-20T00:00:00.000Z",
+    "beneficiariesCount": 25,
+    "id": 3,
+    "images": null,
+    "approved": false,
+    "createdAt": "2025-07-04T22:56:04.699Z"
+  }
+]
