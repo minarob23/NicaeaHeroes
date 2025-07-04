@@ -2,10 +2,46 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { seedDatabase } from "./seed-data";
+import session from "express-session";
+import ConnectPgSimple from "connect-pg-simple";
+import { Pool } from "pg";
 
 const app = express();
+
+// Security and session configuration
+const PgSession = ConnectPgSimple(session);
+const sessionPool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
+app.use(session({
+  store: new PgSession({
+    pool: sessionPool,
+    tableName: 'user_sessions'
+  }),
+  secret: process.env.SESSION_SECRET || 'fallback-secret-key-change-in-production',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,
+    maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+  }
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Security headers
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
+  res.setHeader('X-XSS-Protection', '1; mode=block');
+  if (process.env.NODE_ENV === 'production') {
+    res.setHeader('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+  }
+  next();
+});
 
 app.use((req, res, next) => {
   const start = Date.now();
