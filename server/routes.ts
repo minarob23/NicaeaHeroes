@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertWorkSchema, insertNewsSchema, insertEventSchema } from "@shared/schema";
+import { insertWorkSchema, insertNewsSchema, insertEventSchema, insertUserSchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -139,6 +139,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(membersWithStats);
     } catch (error) {
       res.status(500).json({ message: "فشل في جلب الأعضاء" });
+    }
+  });
+
+  app.post("/api/members", async (req, res) => {
+    try {
+      const validatedUser = insertUserSchema.parse(req.body);
+      const user = await storage.createUser(validatedUser);
+      res.status(201).json(user);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "فشل في إنشاء العضو" });
+      }
     }
   });
 

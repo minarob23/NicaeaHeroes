@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import MemberCard from "@/components/member-card";
+import AddMemberForm from "@/components/add-member-form";
 import { Users, Trophy, Award, Target, Shield, Star, Crown, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -351,6 +352,13 @@ export default function Members() {
             initial="hidden"
             animate="visible"
           >
+            <motion.div
+              variants={fadeInUp}
+              whileHover={{ scale: 1.03, y: -8 }}
+              transition={{ duration: 0.3 }}
+            >
+              <AddMemberForm />
+            </motion.div>
             {(members as any[]).map((member: any, index: number) => (
               <motion.div
                 key={member.id}
