@@ -58,7 +58,7 @@ export default function AddMemberForm() {
 
   if (!isOpen) {
     return (
-      <Card className="bg-gradient-to-br from-orthodox-blue to-orthodox-navy text-white shadow-xl cursor-pointer hover:shadow-2xl transition-all" 
+      <Card className="bg-gradient-to-br from-teal-600 to-teal-800 text-white shadow-xl cursor-pointer hover:shadow-2xl transition-all" 
             onClick={() => setIsOpen(true)}>
         <CardContent className="p-8 text-center">
           <UserPlus className="w-16 h-16 mx-auto mb-4 text-orthodox-gold" />

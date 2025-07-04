@@ -200,7 +200,7 @@ export default function Members() {
               variants={fadeInUp}
               whileHover={{ scale: 1.05, y: -10 }}
             >
-              <Card className="bg-gradient-to-br from-orthodox-blue to-orthodox-navy text-white shadow-2xl border-0 overflow-hidden relative">
+              <Card className="bg-gradient-to-br from-purple-600 to-purple-800 text-white shadow-2xl border-0 overflow-hidden relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-orthodox-gold opacity-10"></div>
                 <CardContent className="p-8 text-center relative z-10">
                   <motion.div
