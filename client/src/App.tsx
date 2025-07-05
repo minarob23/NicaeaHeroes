@@ -10,6 +10,10 @@ import Members from "@/pages/members";
 import News from "@/pages/news";
 import Contact from "@/pages/contact";
 import About from "@/pages/about";
+import ImperialCouncil from "@/pages/imperial-council";
+import EcumenicalScope from "@/pages/ecumenical-scope";
+import Creed from "@/pages/creed";
+import DoctrineProtection from "@/pages/doctrine-protection";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -25,6 +29,10 @@ function Router() {
           <Route path="/news" component={News} />
           <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
+          <Route path="/imperial-council" component={ImperialCouncil} />
+          <Route path="/ecumenical-scope" component={EcumenicalScope} />
+          <Route path="/creed" component={Creed} />
+          <Route path="/doctrine-protection" component={DoctrineProtection} />
           <Route component={NotFound} />
         </Switch>
       </main>

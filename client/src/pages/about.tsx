@@ -206,23 +206,25 @@ export default function About() {
             variants={fadeInUp}
           >
             {[
-              { icon: Crown, text: "مجمع إمبراطوري" },
-              { icon: Globe, text: "نطاق مسكوني" },
-              { icon: Star, text: "قانون الإيمان" },
-              { icon: Shield, text: "حماية العقيدة" }
+              { icon: Crown, text: "مجمع إمبراطوري", link: "/imperial-council" },
+              { icon: Globe, text: "نطاق مسكوني", link: "/ecumenical-scope" },
+              { icon: Star, text: "قانون الإيمان", link: "/creed" },
+              { icon: Shield, text: "حماية العقيدة", link: "/doctrine-protection" }
             ].map((item, index) => (
-              <motion.div
+              <motion.a
                 key={index}
-                className="flex items-center space-x-reverse space-x-3 bg-white bg-opacity-90 px-6 py-3 rounded-full shadow-lg backdrop-blur-sm"
+                href={item.link}
+                className="flex items-center space-x-reverse space-x-3 bg-white bg-opacity-90 px-6 py-3 rounded-full shadow-lg backdrop-blur-sm hover:bg-orthodox-gold hover:text-orthodox-blue transition-all cursor-pointer"
                 animate={floatingAnimation}
                 transition={{
                   ...floatingAnimation.transition,
                   delay: index * 0.4,
                 }}
+                whileHover={{ scale: 1.05 }}
               >
                 <item.icon className="w-6 h-6 text-orthodox-gold" />
                 <span className="text-orthodox-blue font-semibold text-lg">{item.text}</span>
-              </motion.div>
+              </motion.a>
             ))}
           </motion.div>
         </motion.div>
@@ -381,7 +383,7 @@ export default function About() {
                 className={index < 2 ? "md:col-span-2" : ""}
               >
                 <Card className={`shadow-xl hover:shadow-2xl transition-all h-full ${
-                  index === 0 ? "bg-gradient-to-br from-orthodox-gold to-yellow-400 text-orthodox-blue" :
+                  index === 0 ? "bg-gradient-to-br from-emerald-600 to-green-500 text-white" :
                   index === 1 ? "bg-gradient-to-br from-red-600 to-red-800 text-white" :
                   "bg-gradient-to-br from-white to-orthodox-cream"
                 }`}>
@@ -390,14 +392,14 @@ export default function About() {
                       {figure.name}
                     </h3>
                     <p className={`font-semibold mb-4 ${
-                      index === 0 ? "text-orthodox-blue" :
+                      index === 0 ? "text-green-100" :
                       index === 1 ? "text-red-200" :
                       "text-orthodox-gold"
                     }`}>
                       {figure.role}
                     </p>
                     <p className={`mb-4 leading-relaxed ${
-                      index === 0 ? "text-orthodox-navy" :
+                      index === 0 ? "text-green-50" :
                       index === 1 ? "text-red-100" :
                       "text-gray-700"
                     }`}>
@@ -408,12 +410,12 @@ export default function About() {
                       <>
                         <Separator className="my-4" />
                         <div className={`p-4 rounded-lg mb-4 ${
-                          index === 0 ? "bg-orthodox-blue bg-opacity-20" :
+                          index === 0 ? "bg-green-800 bg-opacity-30" :
                           index === 1 ? "bg-black bg-opacity-20" :
                           "bg-orthodox-cream"
                         }`}>
                           <p className={`text-sm leading-relaxed ${
-                            index === 0 ? "text-orthodox-navy" :
+                            index === 0 ? "text-green-50" :
                             index === 1 ? "text-red-100" :
                             "text-gray-700"
                           }`}>
@@ -425,12 +427,12 @@ export default function About() {
                     
                     <Separator className="my-4" />
                     <div className={`p-3 rounded-lg ${
-                      index === 0 ? "bg-orthodox-blue bg-opacity-30" :
+                      index === 0 ? "bg-green-800 bg-opacity-30" :
                       index === 1 ? "bg-black bg-opacity-30" :
                       "bg-orthodox-cream"
                     }`}>
                       <p className={`text-sm font-medium ${
-                        index === 0 ? "text-orthodox-navy" :
+                        index === 0 ? "text-green-50" :
                         index === 1 ? "text-red-100" :
                         "text-orthodox-blue"
                       }`}>
