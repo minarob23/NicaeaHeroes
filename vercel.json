@@ -1,14 +1,17 @@
 {
   "version": 2,
-  "buildCommand": "npm run build && mkdir -p api/server api/shared && cp -r server/* api/server/ && cp -r shared/* api/shared/",
-  "outputDirectory": "dist/public",
   "builds": [
     {
-      "src": "api/index.js",
-      "use": "@vercel/node@2.15.10",
+      "src": "package.json",
+      "use": "@vercel/static-build",
       "config": {
-        "runtime": "nodejs18.x"
+        "buildCommand": "npm run build && mkdir -p api/server api/shared && cp -r server/* api/server/ && cp -r shared/* api/shared/",
+        "outputDirectory": "dist/public"
       }
+    },
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node@2.15.10"
     }
   ],
   "routes": [
