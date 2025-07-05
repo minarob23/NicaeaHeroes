@@ -420,124 +420,32 @@ export default function About() {
                 variants={fadeInUp}
                 whileHover={{ scale: 1.05, rotateY: 5 }}
               >
-                {/* Vision Card */}
-            <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-gradient-to-br from-violet-700 via-fuchsia-600 to-pink-600 bg-opacity-95 backdrop-blur-sm border-violet-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-violet-600 hover:to-pink-500 transition-all duration-500">
-                <CardContent className="p-8">
-                  <motion.div 
-                    className="text-center mb-6"
-                    animate={{scale: [1, 1.2, 1] }}
-                    transition={{duration: 2, repeat: Infinity, delay: 0.3, ease: "easeInOut"}}
-                  >
-                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
-                      <Crown className="w-10 h-10 text-white" />
+                <Card className="bg-gradient-to-br from-white to-orthodox-cream shadow-xl hover:shadow-2xl transition-all h-full">
+                  <CardContent className="p-8">
+                    <motion.div 
+                      className="text-center mb-6"
+                      animate={{ scale: [1, 1.1, 1] }}
+                      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                    >
+                      <div className="w-16 h-16 bg-orthodox-gold bg-opacity-20 rounded-full flex items-center justify-center mx-auto">
+                        <item.icon className="w-8 h-8 text-orthodox-gold" />
+                      </div>
+                    </motion.div>
+                    <h3 className="text-2xl font-bold text-orthodox-blue mb-4 text-center font-amiri">
+                      {item.title}
+                    </h3>
+                    <p className="text-gray-700 mb-4 leading-relaxed text-center">
+                      {item.description}
+                    </p>
+                    <Separator className="my-4" />
+                    <div className="bg-orthodox-cream p-3 rounded-lg">
+                      <p className="text-sm text-orthodox-blue font-medium text-center">
+                        <span className="font-bold">التأثير:</span> {item.impact}
+                      </p>
                     </div>
-                  </motion.div>
-                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
-                    رؤيتنا
-                  </h3>
-                  <p className="text-violet-100 text-lg leading-relaxed text-center">
-                    أن نكون منارة للخير والعطاء في مجتمعنا، نسعى لبناء جيل من الأبطال 
-                    المؤمنين الذين يحملون رسالة المحبة والسلام إلى كل مكان.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Mission Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-gradient-to-br from-teal-700 via-cyan-600 to-blue-600 bg-opacity-95 backdrop-blur-sm border-teal-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-teal-600 hover:to-blue-500 transition-all duration-500">
-                <CardContent className="p-8">
-                  <motion.div 
-                    className="text-center mb-6"
-                    animate={{scale: [1, 1.2, 1] }}
-                    transition={{duration: 2, repeat: Infinity, delay: 0.5, ease: "easeInOut"}}
-                  >
-                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
-                      <Cross className="w-10 h-10 text-white" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
-                    مهمتنا
-                  </h3>
-                  <p className="text-teal-100 text-lg leading-relaxed text-center">
-                    نعمل على خدمة المجتمع وتقديم العون للمحتاجين، ونشر قيم المحبة والتسامح 
-                    والعدالة من خلال أعمالنا وخدماتنا المتنوعة.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Message Card */}
-            <motion.div
-              initial={{ opacity: 0, x: -100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-gradient-to-br from-green-700 via-lime-600 to-emerald-600 bg-opacity-95 backdrop-blur-sm border-green-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-green-600 hover:to-emerald-500 transition-all duration-500">
-                <CardContent className="p-8">
-                  <motion.div 
-                    className="text-center mb-6"
-                    animate={{scale: [1, 1.2, 1] }}
-                    transition={{duration: 2, repeat: Infinity, delay: 0.7, ease: "easeInOut"}}
-                  >
-                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
-                      <Heart className="w-10 h-10 text-white" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
-                    رسالتنا
-                  </h3>
-                  <p className="text-green-100 text-lg leading-relaxed text-center">
-                    نحمل رسالة الإيمان والرجاء والمحبة، ونسعى لتحقيق العدالة الاجتماعية 
-                    وبناء مجتمع متماسك قائم على الحب والاحترام المتبادل.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            {/* Goals Card */}
-            <motion.div
-              initial={{ opacity: 0, x: 100 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <Card className="bg-gradient-to-br from-red-700 via-rose-600 to-orange-600 bg-opacity-95 backdrop-blur-sm border-red-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-red-600 hover:to-orange-500 transition-all duration-500">
-                <CardContent className="p-8">
-                  <motion.div 
-                    className="text-center mb-6"
-                    animate={{scale: [1, 1.2, 1] }}
-                    transition={{duration: 2, repeat: Infinity, delay: 0.9, ease: "easeInOut"}}
-                  >
-                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
-                      <Star className="w-10 h-10 text-white" />
-                    </div>
-                  </motion.div>
-                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
-                    أهدافنا
-                  </h3>
-                  <p className="text-red-100 text-lg leading-relaxed text-center">
-                    نهدف إلى تطوير قدرات أعضائنا وتمكينهم من خدمة المجتمع بفعالية، 
-                    وإقامة شراكات قوية مع المؤسسات الأخرى لتحقيق أكبر تأثير إيجابي.
-                  </p>
-                </CardContent>
-              </Card>
-            </motion.div>
-              
-              
-            </motion.div>
+                  </CardContent>
+                </Card>
+              </motion.div>
             ))}
           </motion.div>
         </motion.section>
