@@ -244,8 +244,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
           return {
             id: user.id,
             fullName: user.fullName,
-            username: user.username,
-            email: user.email,
             role: user.role,
             worksCount: works.length,
             totalBeneficiaries,
@@ -255,16 +253,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
       );
       res.json(membersWithStats);
     } catch (error) {
+      console.error("Error fetching members:", error);
       res.status(500).json({ message: "فشل في جلب الأعضاء" });
     }
   });
 
   app.post("/api/members", async (req, res) => {
     try {
+      console.log("Creating member with data:", req.body);
       const validatedUser = insertUserSchema.parse(req.body);
       const user = await storage.createUser(validatedUser);
+      console.log("Member created successfully:", user);
       res.status(201).json(user);
     } catch (error) {
+      console.error("Error creating member:", error);
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
       } else {

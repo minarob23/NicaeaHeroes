@@ -64,8 +64,6 @@ const roleConfig = {
 export default function EditMemberForm({ member, onClose }: EditMemberFormProps) {
   const [formData, setFormData] = useState({
     fullName: member.fullName,
-    username: member.username,
-    email: member.email,
     role: member.role,
     worksCount: member.worksCount || 0
   });
@@ -163,7 +161,6 @@ export default function EditMemberForm({ member, onClose }: EditMemberFormProps)
                     </div>
                     <div>
                       <h3 className="text-xl font-bold text-gray-800">{member.fullName}</h3>
-                      <p className="text-gray-600">@{member.username}</p>
                     </div>
                   </div>
                   <Badge className={`${currentRole.color} text-sm font-medium`}>
@@ -205,50 +202,17 @@ export default function EditMemberForm({ member, onClose }: EditMemberFormProps)
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Label htmlFor="fullName" className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                        <User className="w-4 h-4 text-blue-600" />
-                        الاسم الكامل
-                      </Label>
-                      <Input
-                        id="fullName"
-                        value={formData.fullName}
-                        onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                        className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
-                        placeholder="أدخل الاسم الكامل"
-                        required
-                      />
-                    </div>
-
-                    <div className="space-y-2">
-                      <Label htmlFor="username" className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                        <UserCheck className="w-4 h-4 text-green-600" />
-                        اسم المستخدم
-                      </Label>
-                      <Input
-                        id="username"
-                        value={formData.username}
-                        onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                        className="border-gray-300 focus:border-green-500 focus:ring-green-500"
-                        placeholder="أدخل اسم المستخدم"
-                        required
-                      />
-                    </div>
-                  </div>
-
                   <div className="space-y-2">
-                    <Label htmlFor="email" className="flex items-center gap-2 text-sm font-medium text-gray-700">
-                      <Mail className="w-4 h-4 text-purple-600" />
-                      البريد الإلكتروني
+                    <Label htmlFor="fullName" className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                      <User className="w-4 h-4 text-blue-600" />
+                      الاسم الكامل
                     </Label>
                     <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      className="border-gray-300 focus:border-purple-500 focus:ring-purple-500"
-                      placeholder="أدخل البريد الإلكتروني"
+                      id="fullName"
+                      value={formData.fullName}
+                      onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                      className="border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      placeholder="أدخل الاسم الكامل"
                       required
                     />
                   </div>

@@ -12,10 +12,7 @@ import { UserPlus, Mail, User, Shield, Trophy, Users, X } from "lucide-react";
 
 export default function AddMemberForm() {
   const [formData, setFormData] = useState({
-    username: "",
     fullName: "",
-    email: "",
-    password: "",
     role: "member",
     worksCount: 0,
     totalBeneficiaries: 0
@@ -42,10 +39,7 @@ export default function AddMemberForm() {
         description: "تم إضافة العضو الجديد بنجاح",
       });
       setFormData({ 
-        username: "", 
         fullName: "", 
-        email: "", 
-        password: "", 
         role: "member", 
         worksCount: 0,
         totalBeneficiaries: 0
@@ -102,46 +96,7 @@ export default function AddMemberForm() {
             />
           </div>
 
-          <div>
-            <Label htmlFor="username" className="text-orthodox-navy font-semibold">اسم المستخدم</Label>
-            <Input
-              id="username"
-              value={formData.username}
-              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-              required
-              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
-              placeholder="أدخل اسم المستخدم"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="email" className="flex items-center gap-2 text-orthodox-navy font-semibold">
-              <Mail className="w-4 h-4" />
-              البريد الإلكتروني
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
-              placeholder="أدخل البريد الإلكتروني"
-            />
-          </div>
-
-          <div>
-            <Label htmlFor="password" className="text-orthodox-navy font-semibold">كلمة المرور</Label>
-            <Input
-              id="password"
-              type="password"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-              required
-              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
-              placeholder="أدخل كلمة المرور"
-            />
-          </div>
+          
 
           <div>
             <Label htmlFor="role" className="flex items-center gap-2 text-orthodox-navy font-semibold">

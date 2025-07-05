@@ -1,20 +1,20 @@
 [
   {
-    "username": "mary_joseph",
-    "password": "password123",
-    "fullName": "مريم يوسف",
-    "email": "mary@nicaea.org",
+    "id": 1,
+    "fullName": "المدير العام",
     "role": "admin",
-    "id": 2,
-    "createdAt": "2025-07-04T22:56:04.698Z"
+    "createdAt": "2024-01-01T00:00:00.000Z"
   },
   {
-    "username": "michael_david",
-    "password": "password123",
-    "fullName": "ميخائيل داود",
-    "email": "michael@nicaea.org",
-    "role": "member",
+    "id": 2,
+    "fullName": "القائد الأول",
+    "role": "leader",
+    "createdAt": "2024-01-15T00:00:00.000Z"
+  },
+  {
     "id": 3,
-    "createdAt": "2025-07-04T22:56:04.698Z"
+    "fullName": "عضو نشط",
+    "role": "member",
+    "createdAt": "2024-02-01T00:00:00.000Z"
   }
 ]

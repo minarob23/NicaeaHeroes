@@ -7,8 +7,6 @@ interface MemberCardProps {
   member: {
     id: number;
     fullName: string;
-    username: string;
-    email: string;
     role: string;
     worksCount: number;
     totalBeneficiaries: number;

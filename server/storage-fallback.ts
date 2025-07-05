@@ -58,16 +58,16 @@ export class FileStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const users = this.readFile<User>(USERS_FILE, []);
-    
+
     // Check for existing username or email
     const existingUser = users.find(u => 
       u.username === insertUser.username || u.email === insertUser.email
     );
-    
+
     if (existingUser) {
       throw new Error(`User with username '${insertUser.username}' or email '${insertUser.email}' already exists`);
     }
-    
+
     const newUser: User = {
       ...insertUser,
       id: this.getNextId(users),
@@ -83,7 +83,7 @@ export class FileStorage implements IStorage {
     const users = this.readFile<User>(USERS_FILE, []);
     const index = users.findIndex(user => user.id === id);
     if (index === -1) return undefined;
-    
+
     users[index] = { ...users[index], ...userUpdate };
     this.writeFile(USERS_FILE, users);
     return users[index];
@@ -93,7 +93,7 @@ export class FileStorage implements IStorage {
     const users = this.readFile<User>(USERS_FILE, []);
     const filteredUsers = users.filter(user => user.id !== id);
     if (filteredUsers.length === users.length) return false;
-    
+
     this.writeFile(USERS_FILE, filteredUsers);
     return true;
   }
@@ -142,7 +142,7 @@ export class FileStorage implements IStorage {
     const works = this.readFile<Work>(WORKS_FILE, []);
     const index = works.findIndex(work => work.id === id);
     if (index === -1) return undefined;
-    
+
     works[index] = { ...works[index], ...workUpdate };
     this.writeFile(WORKS_FILE, works);
     return works[index];
@@ -152,7 +152,7 @@ export class FileStorage implements IStorage {
     const works = this.readFile<Work>(WORKS_FILE, []);
     const filteredWorks = works.filter(work => work.id !== id);
     if (filteredWorks.length === works.length) return false;
-    
+
     this.writeFile(WORKS_FILE, filteredWorks);
     return true;
   }
@@ -193,7 +193,7 @@ export class FileStorage implements IStorage {
     const news = this.readFile<News>(NEWS_FILE, []);
     const index = news.findIndex(item => item.id === id);
     if (index === -1) return undefined;
-    
+
     news[index] = { ...news[index], ...newsUpdate };
     this.writeFile(NEWS_FILE, news);
     return news[index];
@@ -203,7 +203,7 @@ export class FileStorage implements IStorage {
     const news = this.readFile<News>(NEWS_FILE, []);
     const filteredNews = news.filter(item => item.id !== id);
     if (filteredNews.length === news.length) return false;
-    
+
     this.writeFile(NEWS_FILE, filteredNews);
     return true;
   }
@@ -241,7 +241,7 @@ export class FileStorage implements IStorage {
     const events = this.readFile<Event>(EVENTS_FILE, []);
     const index = events.findIndex(event => event.id === id);
     if (index === -1) return undefined;
-    
+
     events[index] = { ...events[index], ...eventUpdate };
     this.writeFile(EVENTS_FILE, events);
     return events[index];
@@ -251,7 +251,7 @@ export class FileStorage implements IStorage {
     const events = this.readFile<Event>(EVENTS_FILE, []);
     const filteredEvents = events.filter(event => event.id !== id);
     if (filteredEvents.length === events.length) return false;
-    
+
     this.writeFile(EVENTS_FILE, filteredEvents);
     return true;
   }
