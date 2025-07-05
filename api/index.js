@@ -1,21 +1,31 @@
-import { storagePromise } from '../server/storage.js';
-import { insertWorkSchema, insertNewsSchema, insertEventSchema, insertUserSchema } from '../shared/schema.js';
-import { z } from 'zod';
-
 // Initialize storage once
 let storage = null;
 
+// Dynamic imports for Vercel compatibility
 async function getStorage() {
   if (!storage) {
+    const { storagePromise } = await import('./server/storage.js');
     storage = await storagePromise;
   }
   return storage;
+}
+
+async function getSchemas() {
+  const schemas = await import('./shared/schema.js');
+  return {
+    insertWorkSchema: schemas.insertWorkSchema,
+    insertNewsSchema: schemas.insertNewsSchema,
+    insertEventSchema: schemas.insertEventSchema,
+    insertUserSchema: schemas.insertUserSchema
+  };
 }
 
 // Main API handler
 export default async function handler(req, res) {
   const { method, url } = req;
   const storage = await getStorage();
+  const { insertWorkSchema, insertNewsSchema, insertEventSchema, insertUserSchema } = await getSchemas();
+  const { z } = await import('zod');
   
   // Parse URL path
   const urlPath = url.replace('/api', '');
