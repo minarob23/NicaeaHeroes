@@ -114,6 +114,10 @@
 
 Changelog:
 - July 05, 2025. Initial setup
+- July 05, 2025. Added edit and delete functionality for all sections (works, news, events)
+- July 05, 2025. Removed volunteer hours references completely from all statistics
+- July 05, 2025. Created comprehensive About page focusing on the Council of Nicaea
+- July 05, 2025. Fixed database schema issues for Vercel deployment compatibility
 
 ## User Preferences
 

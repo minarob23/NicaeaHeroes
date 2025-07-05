@@ -21,7 +21,6 @@ interface Stats {
   totalMembers: number;
   totalWorks: number;
   totalBeneficiaries: number;
-  volunteerHours: number;
 }
 
 export default function Members() {
@@ -194,30 +193,7 @@ export default function Members() {
             </Card>
           </motion.div>
 
-          {/* Volunteer Hours */}
-          <motion.div
-            variants={cardVariants}
-            whileHover={{ scale: 1.05, y: -10 }}
-          >
-            <Card className="bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-2xl border-0 overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white opacity-10"></div>
-              <CardContent className="p-8 relative z-10">
-                <div className="flex items-center justify-between mb-4">
-                  <Heart className="w-12 h-12 text-green-100" />
-                  <Award className="w-8 h-8 text-green-100 opacity-60" />
-                </div>
-                <motion.div 
-                  className="text-4xl font-bold mb-2"
-                  initial={{ opacity: 0, scale: 0.5 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8, delay: 0.9 }}
-                >
-                  {stats?.volunteerHours || 0}
-                </motion.div>
-                <div className="text-green-100 font-semibold">ساعات التطوع</div>
-              </CardContent>
-            </Card>
-          </motion.div>
+
         </motion.div>
 
         {/* Add Member Form */}

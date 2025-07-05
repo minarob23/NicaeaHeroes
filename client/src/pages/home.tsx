@@ -413,7 +413,7 @@ export default function Home() {
               </motion.p>
             </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {/* Total Works Card */}
               <motion.div
                 initial={{ opacity: 0, y: 50, scale: 0.8 }}
@@ -507,36 +507,7 @@ export default function Home() {
                 </Card>
               </motion.div>
 
-              {/* Volunteer Hours Card */}
-              <motion.div
-                initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                whileHover={{ scale: 1.05, y: -10 }}
-                viewport={{ once: true }}
-              >
-                <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white shadow-2xl border-0 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-yellow-300 opacity-20"></div>
-                  <CardContent className="p-8 text-center relative z-10">
-                    <motion.div 
-                      className="mb-4"
-                      animate={pulse}
-                    >
-                      <Sparkles className="w-12 h-12 text-yellow-300 mx-auto" />
-                    </motion.div>
-                    <motion.div 
-                      className="text-4xl font-bold mb-3"
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.8, delay: 1.1 }}
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      {stats.volunteerHours || 0}
-                    </motion.div>
-                    <div className="font-semibold">ساعات التطوع</div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+
             </div>
 
             {/* Call to Action */}

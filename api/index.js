@@ -197,8 +197,7 @@ export default async function handler(req, res) {
       const stats = {
         totalMembers: data.users.length,
         totalWorks: data.works.length,
-        totalBeneficiaries: data.works.reduce((sum, work) => sum + (work.beneficiariesCount || 0), 0),
-        volunteerHours: data.works.length * 2
+        totalBeneficiaries: data.works.reduce((sum, work) => sum + (work.beneficiariesCount || 0), 0)
       };
       res.json(stats);
       return;

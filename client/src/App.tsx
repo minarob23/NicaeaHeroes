@@ -9,6 +9,7 @@ import Works from "@/pages/works";
 import Members from "@/pages/members";
 import News from "@/pages/news";
 import Contact from "@/pages/contact";
+import About from "@/pages/about";
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
 
@@ -22,6 +23,7 @@ function Router() {
           <Route path="/works" component={Works} />
           <Route path="/members" component={Members} />
           <Route path="/news" component={News} />
+          <Route path="/about" component={About} />
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>

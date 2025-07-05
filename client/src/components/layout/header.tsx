@@ -13,6 +13,7 @@ export default function Header() {
     { name: "الأعمال", href: "/works" },
     { name: "الأعضاء", href: "/members" },
     { name: "الأخبار", href: "/news" },
+    { name: "عن الموقع", href: "/about" },
     { name: "اتصل بنا", href: "/contact" },
   ];
 

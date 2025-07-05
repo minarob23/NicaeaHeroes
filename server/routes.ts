@@ -337,13 +337,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const works = await storage.getAllWorks();
       const users = await storage.getAllUsers();
       const totalBeneficiaries = works.reduce((sum, work) => sum + work.beneficiariesCount, 0);
-      const volunteerHours = works.length * 4; // Assuming 4 hours per work on average
       
       res.json({
         totalWorks: works.length,
         totalBeneficiaries,
-        totalMembers: users.length,
-        volunteerHours
+        totalMembers: users.length
       });
     } catch (error) {
       res.status(500).json({ message: "فشل في جلب الإحصائيات" });
