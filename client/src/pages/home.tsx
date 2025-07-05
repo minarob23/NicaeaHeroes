@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { Trophy, Cross, Scroll, Flame, Shield, Star, Sparkles, Heart, ArrowDown } from "lucide-react";
+import { Trophy, Cross, Scroll, Flame, Shield, Star, Sparkles, Heart, ArrowDown, Eye } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
@@ -73,7 +73,7 @@ export default function Home() {
       <section className="relative bg-gradient-to-br from-orthodox-blue via-orthodox-navy to-orthodox-blue min-h-screen flex items-center">
         {/* Animated Background */}
         <div className="absolute inset-0 bg-black bg-opacity-40"></div>
-        
+
         {/* Floating Particles */}
         <div className="absolute inset-0 overflow-hidden">
           {[...Array(20)].map((_, i) => (
@@ -116,7 +116,7 @@ export default function Home() {
                 <div className="w-full h-full bg-orthodox-gold rounded-full flex items-center justify-center shadow-2xl">
                   <Trophy className="text-orthodox-blue w-16 h-16" />
                 </div>
-                
+
                 {/* Sparkles around logo */}
                 {[...Array(8)].map((_, i) => (
                   <motion.div
@@ -160,7 +160,7 @@ export default function Home() {
                   🏆
                 </motion.span>
               </motion.h1>
-              
+
               <motion.p 
                 className="text-2xl text-orthodox-cream mb-8"
                 variants={fadeInUp}
@@ -200,7 +200,7 @@ export default function Home() {
                         <strong>إحنا أبطال نيقية... واقفين ومافيش زَيّنا!</strong>
                       </span>
                     </motion.div>
-                    
+
                     <motion.div 
                       className="flex items-center justify-center space-x-reverse space-x-3"
                       variants={fadeInUp}
@@ -209,7 +209,7 @@ export default function Home() {
                       <Scroll className="w-6 h-6 text-orthodox-gold" />
                       <span>ماسكين فإيمانّا... وعايشين على عهد آبائنا</span>
                     </motion.div>
-                    
+
                     <motion.div 
                       className="flex items-center justify-center space-x-reverse space-x-3"
                       variants={fadeInUp}
@@ -218,7 +218,7 @@ export default function Home() {
                       <Flame className="w-6 h-6 text-orthodox-gold" />
                       <span>مهما تهبّ ريح، إحنا صخرة ما بتهزش</span>
                     </motion.div>
-                    
+
                     <motion.div 
                       className="flex items-center justify-center space-x-reverse space-x-3"
                       variants={fadeInUp}
@@ -227,7 +227,7 @@ export default function Home() {
                       <Shield className="w-6 h-6 text-orthodox-gold" />
                       <span>ونقولها بجرأة وصوت عالي:</span>
                     </motion.div>
-                    
+
                     <motion.p 
                       className="text-orthodox-gold text-2xl font-bold"
                       variants={fadeInUp}
@@ -235,7 +235,7 @@ export default function Home() {
                     >
                       "نؤمن... نثبت... ونكمل للآخر!"
                     </motion.p>
-                    
+
                     <motion.div 
                       className="border-t border-orthodox-gold border-opacity-30 pt-6 mt-6 space-y-2"
                       variants={fadeInUp}
@@ -259,7 +259,7 @@ export default function Home() {
                         🚫 لا عقيدتنا للبيع... ولا قلبنا هيتغير!
                       </motion.p>
                     </motion.div>
-                    
+
                     <motion.div 
                       className="border-t border-orthodox-gold border-opacity-30 pt-6 mt-6"
                       variants={fadeInUp}
@@ -304,7 +304,7 @@ export default function Home() {
                   </Link>
                 </Button>
               </motion.div>
-              
+
               <motion.div
                 whileHover={{ scale: 1.05, y: -5 }}
                 whileTap={{ scale: 0.95 }}
@@ -640,20 +640,21 @@ export default function Home() {
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
             >
-              <Card className="bg-white bg-opacity-15 backdrop-blur-sm border-orthodox-gold border-opacity-30 shadow-2xl hover:shadow-3xl transition-all duration-300">
+              <Card className="bg-gradient-to-br from-purple-600 via-purple-500 to-indigo-600 bg-opacity-95 backdrop-blur-sm border-purple-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-purple-500 hover:to-indigo-500 transition-all duration-500">
                 <CardContent className="p-8">
                   <motion.div 
                     className="text-center mb-6"
                     animate={pulse}
+                    transition={{ ...pulse.transition, delay: 0.3 }}
                   >
-                    <div className="w-20 h-20 bg-orthodox-gold rounded-full flex items-center justify-center mx-auto">
-                      <Star className="w-10 h-10 text-orthodox-blue" />
+                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
+                      <Eye className="w-10 h-10 text-white" />
                     </div>
                   </motion.div>
-                  <h3 className="text-2xl font-bold text-orthodox-gold font-amiri mb-4 text-center">
+                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
                     رؤيتنا
                   </h3>
-                  <p className="text-white text-lg leading-relaxed text-center">
+                  <p className="text-purple-100 text-lg leading-relaxed text-center">
                     أن نكون منارة للخير والعطاء في مجتمعنا، نسعى لبناء جيل من الأبطال 
                     المؤمنين الذين يحملون رسالة المحبة والسلام إلى كل مكان.
                   </p>
@@ -668,23 +669,23 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <Card className="bg-white bg-opacity-15 backdrop-blur-sm border-orthodox-gold border-opacity-30 shadow-2xl hover:shadow-3xl transition-all duration-300">
+              <Card className="bg-gradient-to-br from-emerald-600 via-teal-500 to-cyan-600 bg-opacity-95 backdrop-blur-sm border-emerald-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-emerald-500 hover:to-cyan-500 transition-all duration-500">
                 <CardContent className="p-8">
                   <motion.div 
                     className="text-center mb-6"
                     animate={pulse}
                     transition={{ ...pulse.transition, delay: 0.5 }}
                   >
-                    <div className="w-20 h-20 bg-orthodox-gold rounded-full flex items-center justify-center mx-auto">
-                      <Heart className="w-10 h-10 text-orthodox-blue" />
+                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
+                      <Heart className="w-10 h-10 text-white" />
                     </div>
                   </motion.div>
-                  <h3 className="text-2xl font-bold text-orthodox-gold font-amiri mb-4 text-center">
+                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
                     رسالتنا
                   </h3>
-                  <p className="text-white text-lg leading-relaxed text-center">
-                    نعمل على تنظيم وتوثيق الأعمال الخيرية والتطوعية، ونوفر منصة 
-                    تتيح للأعضاء مشاركة إنجازاتهم وتحفيز الآخرين للمشاركة في العطاء.
+                  <p className="text-emerald-100 text-lg leading-relaxed text-center">
+                    نعمل على تنظيم وتوثيق الأعمال الخيرية والتطوعية، ونوفر منصة تتيح 
+                    للأعضاء مشاركة إنجازاتهم وتحفيز الآخرين للمشاركة في العطاء.
                   </p>
                 </CardContent>
               </Card>
