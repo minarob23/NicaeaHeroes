@@ -1,0 +1,34 @@
+[17:19:49.694] Running build in Washington, D.C., USA (East) – iad1
+[17:19:49.694] Build machine configuration: 2 cores, 8 GB
+[17:19:49.709] Cloning github.com/minarob23/NicaeaHeroes (Branch: main, Commit: 00dad6f)
+[17:19:49.845] Previous build caches not available
+[17:19:49.960] Cloning completed: 251.000ms
+[17:19:50.248] Running "vercel build"
+[17:19:50.925] Vercel CLI 44.2.10
+[17:19:51.602] > Installing Builder: @vercel/node@3.0.0
+[17:20:00.941] Installing dependencies...
+[17:20:05.104] npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+[17:20:05.133] npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+[17:20:09.913] 
+[17:20:09.914] added 489 packages in 9s
+[17:20:09.915] 
+[17:20:09.915] 66 packages are looking for funding
+[17:20:09.915]   run `npm fund` for details
+[17:20:10.769] [36mvite v5.4.19 [32mbuilding for production...[36m[39m
+[17:20:10.816] transforming...
+[17:20:16.811] [32m✓[39m 2899 modules transformed.
+[17:20:17.241] rendering chunks...
+[17:20:17.252] computing gzip size...
+[17:20:17.272] [2m../dist/public/[22m[32mindex.html                 [39m[1m[2m  0.63 kB[22m[1m[22m[2m │ gzip:   0.38 kB[22m
+[17:20:17.273] [2m../dist/public/[22m[2massets/[22m[35mindex-DJeQLOvW.css  [39m[1m[2m 73.79 kB[22m[1m[22m[2m │ gzip:  12.72 kB[22m
+[17:20:17.273] [2m../dist/public/[22m[2massets/[22m[36mindex-BMsTozua.js   [39m[1m[33m629.82 kB[39m[22m[2m │ gzip: 191.80 kB[22m
+[17:20:17.273] [33m
+[17:20:17.274] (!) Some chunks are larger than 500 kB after minification. Consider:
+[17:20:17.274] - Using dynamic import() to code-split the application
+[17:20:17.274] - Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+[17:20:17.274] - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39m
+[17:20:17.274] [32m✓ built in 6.48s[39m
+[17:20:17.329] Error: No Output Directory named "client" found after the Build completed. You can configure the Output Directory in your Project Settings.
+[17:20:17.329] Learn More: https://vercel.link/missing-public-directory
+[17:20:17.568] 
+[17:20:20.059] Exiting build container

@@ -34,7 +34,7 @@ Click "Deploy" - Vercel will:
 
 ### Frontend
 - Built with Vite
-- Output directory: `dist/client`
+- Output directory: `dist/public`
 - Served as static files
 
 ### Backend
