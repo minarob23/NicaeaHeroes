@@ -29,10 +29,9 @@ export const news = pgTable("news", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   content: text("content").notNull(),
-  excerpt: text("excerpt").notNull(),
-  category: text("category").notNull(),
+  summary: text("summary"),
   authorId: integer("author_id").references(() => users.id),
-  relatedWorkIds: integer("related_work_ids").array(),
+  relatedWorkId: integer("related_work_id").references(() => works.id),
   published: boolean("published").default(false),
   createdAt: timestamp("created_at").defaultNow(),
 });
@@ -60,7 +59,6 @@ export const insertWorkSchema = createInsertSchema(works).omit({
 export const insertNewsSchema = createInsertSchema(news).omit({
   id: true,
   createdAt: true,
-  published: true,
 });
 
 export const insertEventSchema = createInsertSchema(events).omit({

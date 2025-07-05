@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +14,8 @@ import { motion } from "framer-motion";
 export default function Works() {
   const [selectedCategory, setSelectedCategory] = useState<string>("");
   const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
 
   const { data: works = [], isLoading, refetch } = useQuery({
     queryKey: ["/api/works", selectedCategory],
@@ -21,6 +24,34 @@ export default function Works() {
       const response = await fetch(url);
       return response.json();
     },
+  });
+
+  const deleteWorkMutation = useMutation({
+    mutationFn: async (workId: number) => {
+      const response = await fetch(`/api/works/${workId}`, {
+        method: "DELETE",
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete work');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "تم حذف العمل بنجاح",
+        description: "تم حذف العمل نهائياً",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/works"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "خطأ في حذف العمل",
+        description: "حدث خطأ أثناء حذف العمل",
+        variant: "destructive",
+      });
+    }
   });
 
   const categories = [
@@ -310,7 +341,11 @@ export default function Works() {
                 whileHover={{ scale: 1.03, y: -5 }}
                 transition={{ duration: 0.3 }}
               >
-                <WorkCard work={work} getCategoryColor={getCategoryColor} />
+                <WorkCard 
+                  work={work} 
+                  getCategoryColor={getCategoryColor}
+                  onDelete={(workId) => deleteWorkMutation.mutate(workId)}
+                />
               </motion.div>
             ))}
           </motion.div>

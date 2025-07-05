@@ -65,6 +65,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/works/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      
+      // Validate the update data
+      const validatedData = insertWorkSchema.partial().parse(updateData);
+      
+      const updatedWork = await storage.updateWork(id, validatedData);
+      if (!updatedWork) {
+        return res.status(404).json({ message: "العمل غير موجود" });
+      }
+      
+      res.json(updatedWork);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "فشل في تحديث العمل" });
+      }
+    }
+  });
+
+  app.delete("/api/works/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteWork(id);
+      if (!deleted) {
+        return res.status(404).json({ message: "العمل غير موجود" });
+      }
+      
+      res.json({ message: "تم حذف العمل بنجاح" });
+    } catch (error) {
+      res.status(500).json({ message: "فشل في حذف العمل" });
+    }
+  });
+
   // News routes
   app.get("/api/news", async (req, res) => {
     try {
