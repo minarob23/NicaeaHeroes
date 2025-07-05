@@ -98,6 +98,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/news/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      
+      // Validate the update data
+      const validatedData = insertNewsSchema.partial().parse(updateData);
+      
+      const updatedNews = await storage.updateNews(id, validatedData);
+      if (!updatedNews) {
+        return res.status(404).json({ message: "الخبر غير موجود" });
+      }
+      
+      res.json(updatedNews);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "فشل في تحديث الخبر" });
+      }
+    }
+  });
+
+  app.delete("/api/news/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteNews(id);
+      if (!deleted) {
+        return res.status(404).json({ message: "الخبر غير موجود" });
+      }
+      
+      res.json({ message: "تم حذف الخبر بنجاح" });
+    } catch (error) {
+      res.status(500).json({ message: "فشل في حذف الخبر" });
+    }
+  });
+
   // Events routes
   app.get("/api/events", async (req, res) => {
     try {

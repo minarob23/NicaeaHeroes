@@ -58,6 +58,34 @@ export default function News() {
     }
   });
 
+  const deleteNewsMutation = useMutation({
+    mutationFn: async (newsId: number) => {
+      const response = await fetch(`/api/news/${newsId}`, {
+        method: "DELETE",
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete news');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "تم حذف الخبر بنجاح",
+        description: "تم حذف الخبر نهائياً",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/news"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "خطأ في حذف الخبر",
+        description: "حدث خطأ أثناء حذف الخبر",
+        variant: "destructive",
+      });
+    }
+  });
+
   // Animation variants
   const fadeInUp = {
     hidden: { opacity: 0, y: 60 },
@@ -367,7 +395,10 @@ export default function News() {
                   variants={fadeInUp}
                   whileHover={{ scale: 1.03, y: -5 }}
                 >
-                  <NewsCard article={article} />
+                  <NewsCard 
+                    article={article} 
+                    onDelete={(articleId) => deleteNewsMutation.mutate(articleId)}
+                  />
                 </motion.div>
               ))}
             </motion.div>
