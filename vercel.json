@@ -5,7 +5,7 @@
       "src": "package.json",
       "use": "@vercel/static-build",
       "config": {
-        "buildCommand": "npm run build && mkdir -p api/server api/shared && cp -r server/* api/server/ && cp -r shared/* api/shared/",
+        "buildCommand": "vite build && mkdir -p api/server api/shared && cp -r server/* api/server/ && cp -r shared/* api/shared/",
         "outputDirectory": "dist/public"
       }
     },
@@ -16,6 +16,8 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "/api/index.js" },
+    { "src": "/assets/(.*)", "dest": "/assets/$1" },
+    { "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico))", "dest": "/$1" },
     { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

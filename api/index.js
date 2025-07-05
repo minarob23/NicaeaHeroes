@@ -187,7 +187,26 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Test route
+    // Health check route
+    if (urlPath === '/health' && method === 'GET') {
+      res.json({ 
+        status: 'healthy',
+        message: 'Nicaea Heroes API is working!', 
+        method,
+        url,
+        urlPath,
+        timestamp: new Date().toISOString(),
+        dataLoaded: {
+          users: data.users.length,
+          works: data.works.length,
+          news: data.news.length,
+          events: data.events.length
+        }
+      });
+      return;
+    }
+
+    // Test route  
     if (urlPath === '/test' && method === 'GET') {
       res.json({ 
         message: 'API is working!', 
