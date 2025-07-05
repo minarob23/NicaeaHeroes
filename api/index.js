@@ -1,63 +1,64 @@
-// Simple in-memory storage for Vercel deployment
+
+// Complete API handler for Vercel deployment
 const data = {
+  stats: {
+    totalWorks: 3,
+    totalBeneficiaries: 105,
+    totalMembers: 77
+  },
   works: [
     {
       id: 1,
-      title: "توزيع الطعام على الفقراء",
-      description: "قمنا بتوزيع وجبات طعام على الأسر المحتاجة في المنطقة",
-      category: "إغاثة",
-      workDate: "2024-01-15",
-      beneficiariesCount: 50,
+      title: "حملة إطعام الأيتام",
+      description: "توزيع وجبات ساخنة على الأطفال الأيتام في دار الرعاية",
+      category: "خدمة اجتماعية",
       authorId: 1,
+      workDate: "2024-12-15T00:00:00Z",
+      beneficiariesCount: 50,
+      approved: true,
       createdAt: "2024-01-15T10:00:00Z"
     },
     {
       id: 2,
       title: "زيارة دار المسنين",
-      description: "قمنا بزيارة دار المسنين وقضاء وقت ممتع مع كبار السن",
-      category: "رعاية اجتماعية",
-      workDate: "2024-01-20",
-      beneficiariesCount: 25,
+      description: "قضاء وقت مع كبار السن وتقديم الدعم النفسي",
+      category: "زيارات",
       authorId: 2,
-      createdAt: "2024-01-20T14:00:00Z"
+      workDate: "2024-12-18T00:00:00Z",
+      beneficiariesCount: 30,
+      approved: true,
+      createdAt: "2024-01-18T10:00:00Z"
     },
     {
       id: 3,
-      title: "تنظيف الحديقة العامة",
-      description: "شاركنا في تنظيف الحديقة العامة وزراعة الأشجار",
-      category: "بيئة",
-      workDate: "2024-01-25",
-      beneficiariesCount: 30,
-      authorId: 1,
-      createdAt: "2024-01-25T09:00:00Z"
-    }
-  ],
-  users: [
-    {
-      id: 1,
-      fullName: "أحمد محمد",
-      username: "ahmed",
-      email: "ahmed@example.com",
-      role: "متطوع",
-      createdAt: "2024-01-01T00:00:00Z"
-    },
-    {
-      id: 2,
-      fullName: "فاطمة علي",
-      username: "fatima",
-      email: "fatima@example.com",
-      role: "منسق",
-      createdAt: "2024-01-01T00:00:00Z"
+      title: "توزيع الملابس الشتوية",
+      description: "توزيع ملابس شتوية دافئة على الأسر المحتاجة",
+      category: "مساعدات",
+      authorId: 3,
+      workDate: "2024-12-20T00:00:00Z",
+      beneficiariesCount: 25,
+      approved: true,
+      createdAt: "2024-01-20T10:00:00Z"
     }
   ],
   news: [
     {
       id: 1,
-      title: "حملة جديدة لمساعدة الأسر المحتاجة",
-      content: "تعلن كتيبة أبطال نيقية عن إطلاق حملة جديدة لمساعدة الأسر المحتاجة في المنطقة",
-      publishedAt: "2024-01-10T10:00:00Z",
-      isPublished: true,
+      title: "إعلان عن حملة خيرية جديدة",
+      content: "نعلن عن بدء حملة خيرية جديدة لمساعدة الأسر المحتاجة في فصل الشتاء",
+      summary: "حملة خيرية شتوية للأسر المحتاجة",
+      published: true,
+      authorId: 1,
       createdAt: "2024-01-10T10:00:00Z"
+    },
+    {
+      id: 2,
+      title: "نتائج الأعمال الخيرية لشهر ديسمبر",
+      content: "تم إنجاز عدد كبير من الأعمال الخيرية خلال شهر ديسمبر",
+      summary: "ملخص إنجازات شهر ديسمبر",
+      published: true,
+      authorId: 2,
+      createdAt: "2024-01-12T10:00:00Z"
     }
   ],
   events: [
@@ -65,12 +66,32 @@ const data = {
       id: 1,
       title: "فعالية خيرية في الحديقة العامة",
       description: "انضموا إلينا في فعالية خيرية رائعة",
-      eventDate: "2024-02-15T15:00:00Z",
+      eventDate: "2025-02-15T15:00:00Z",
       location: "الحديقة العامة المركزية",
       createdAt: "2024-01-30T10:00:00Z"
+    },
+    {
+      id: 2,
+      title: "لقاء شهري للأعضاء",
+      description: "اجتماع شهري لمناقشة الأعمال والمشاريع القادمة",
+      eventDate: "2025-01-15T18:00:00Z",
+      location: "قاعة الكنيسة الرئيسية",
+      createdAt: "2024-01-05T10:00:00Z"
     }
   ]
 };
+
+// Utility functions
+function getNextId(array) {
+  return array.length > 0 ? Math.max(...array.map(item => item.id)) + 1 : 1;
+}
+
+function parseUrl(url) {
+  if (url.startsWith('/api')) {
+    return url.replace('/api', '');
+  }
+  return url || '/';
+}
 
 // Main API handler
 export default async function handler(req, res) {
@@ -89,156 +110,37 @@ export default async function handler(req, res) {
       return;
     }
     
-    // Health check
-    if (url === '/api/health' || url === '/health') {
-      res.json({ status: 'ok', timestamp: new Date().toISOString() });
-      return;
-    }
-    
-    // Parse URL path - handle Vercel routing
-    let urlPath = url;
-    if (url.startsWith('/api')) {
-      urlPath = url.replace('/api', '');
-    }
-    
-    // If path is empty, default to root
-    if (!urlPath || urlPath === '/') {
-      urlPath = '/';
-    }
-    
+    // Parse URL path
+    const urlPath = parseUrl(url);
     console.log('Parsed URL path:', urlPath);
     
-    // Handle specific ID routes
-    const memberIdMatch = urlPath.match(/^\/members\/(\d+)$/);
-    const workIdMatch = urlPath.match(/^\/works\/(\d+)$/);
-    const newsIdMatch = urlPath.match(/^\/news\/(\d+)$/);
-    const eventIdMatch = urlPath.match(/^\/events\/(\d+)$/);
-    
-    // Member ID routes (DELETE, PUT)
-    if (memberIdMatch) {
-      const memberId = parseInt(memberIdMatch[1]);
-      
-      if (method === 'DELETE') {
-        const memberIndex = data.users.findIndex(user => user.id === memberId);
-        if (memberIndex !== -1) {
-          data.users.splice(memberIndex, 1);
-          res.json({ message: "تم حذف العضو بنجاح" });
-        } else {
-          res.status(404).json({ message: "العضو غير موجود" });
-        }
-        return;
-      }
-      
-      if (method === 'PUT') {
-        const memberIndex = data.users.findIndex(user => user.id === memberId);
-        if (memberIndex !== -1) {
-          data.users[memberIndex] = { ...data.users[memberIndex], ...req.body };
-          res.json(data.users[memberIndex]);
-        } else {
-          res.status(404).json({ message: "العضو غير موجود" });
-        }
-        return;
-      }
-    }
-    
-    // Work ID routes (DELETE, PUT)
-    if (workIdMatch) {
-      const workId = parseInt(workIdMatch[1]);
-      
-      if (method === 'DELETE') {
-        const workIndex = data.works.findIndex(work => work.id === workId);
-        if (workIndex !== -1) {
-          data.works.splice(workIndex, 1);
-          res.json({ message: "تم حذف العمل بنجاح" });
-        } else {
-          res.status(404).json({ message: "العمل غير موجود" });
-        }
-        return;
-      }
-      
-      if (method === 'PUT') {
-        const workIndex = data.works.findIndex(work => work.id === workId);
-        if (workIndex !== -1) {
-          data.works[workIndex] = { ...data.works[workIndex], ...req.body };
-          res.json(data.works[workIndex]);
-        } else {
-          res.status(404).json({ message: "العمل غير موجود" });
-        }
-        return;
-      }
-    }
-    
-    // Works routes
-    if (urlPath === '/works' && method === 'GET') {
-      const worksWithAuthors = data.works.map(work => {
-        const author = data.users.find(user => user.id === work.authorId);
-        return {
-          ...work,
-          author: author ? { id: author.id, fullName: author.fullName } : null
-        };
-      });
-      res.json(worksWithAuthors);
-      return;
-    }
-
-    if (urlPath === '/works' && method === 'POST') {
-      const newWork = {
-        id: data.works.length + 1,
-        ...req.body,
-        createdAt: new Date().toISOString()
-      };
-      data.works.push(newWork);
-      res.status(201).json(newWork);
-      return;
-    }
-
-    // Stats route
+    // Route handlers
     if (urlPath === '/stats' && method === 'GET') {
-      const stats = {
-        totalMembers: data.users.length,
-        totalWorks: data.works.length,
-        totalBeneficiaries: data.works.reduce((sum, work) => sum + (work.beneficiariesCount || 0), 0)
-      };
-      res.json(stats);
+      res.json(data.stats);
       return;
     }
 
-    // Members routes
-    if (urlPath === '/members' && method === 'GET') {
-      const membersWithStats = data.users.map(user => {
-        const userWorks = data.works.filter(work => work.authorId === user.id);
-        return {
-          ...user,
-          worksCount: userWorks.length,
-          totalBeneficiaries: userWorks.reduce((sum, work) => sum + (work.beneficiariesCount || 0), 0)
-        };
-      });
-      res.json(membersWithStats);
+    if (urlPath === '/works' && method === 'GET') {
+      res.json(data.works);
       return;
     }
 
-    if (urlPath === '/members' && method === 'POST') {
-      const newUser = {
-        id: data.users.length + 1,
-        ...req.body,
-        createdAt: new Date().toISOString()
-      };
-      data.users.push(newUser);
-      res.status(201).json(newUser);
-      return;
-    }
-
-    // News routes
     if (urlPath === '/news' && method === 'GET') {
-      res.json(data.news.filter(item => item.isPublished));
+      res.json(data.news);
       return;
     }
 
+    if (urlPath === '/events' && method === 'GET') {
+      res.json(data.events);
+      return;
+    }
+
+    // News operations
     if (urlPath === '/news' && method === 'POST') {
+      const newsData = req.body;
       const newNews = {
-        id: data.news.length + 1,
-        ...req.body,
-        isPublished: true,
+        id: getNextId(data.news),
+        ...newsData,
         createdAt: new Date().toISOString()
       };
       data.news.push(newNews);
@@ -246,16 +148,50 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Events routes
-    if (urlPath === '/events' && method === 'GET') {
-      res.json(data.events);
-      return;
+    const newsIdMatch = urlPath.match(/^\/news\/(\d+)$/);
+    if (newsIdMatch) {
+      const newsId = parseInt(newsIdMatch[1]);
+      const newsIndex = data.news.findIndex(n => n.id === newsId);
+
+      if (method === 'PUT') {
+        if (newsIndex === -1) {
+          res.status(404).json({ message: "الخبر غير موجود" });
+          return;
+        }
+        
+        const updateData = req.body;
+        data.news[newsIndex] = { ...data.news[newsIndex], ...updateData };
+        res.json(data.news[newsIndex]);
+        return;
+      }
+
+      if (method === 'DELETE') {
+        if (newsIndex === -1) {
+          res.status(404).json({ message: "الخبر غير موجود" });
+          return;
+        }
+        
+        data.news.splice(newsIndex, 1);
+        res.json({ message: "تم حذف الخبر بنجاح" });
+        return;
+      }
+
+      if (method === 'GET') {
+        if (newsIndex === -1) {
+          res.status(404).json({ message: "الخبر غير موجود" });
+          return;
+        }
+        res.json(data.news[newsIndex]);
+        return;
+      }
     }
 
+    // Events operations
     if (urlPath === '/events' && method === 'POST') {
+      const eventData = req.body;
       const newEvent = {
-        id: data.events.length + 1,
-        ...req.body,
+        id: getNextId(data.events),
+        ...eventData,
         createdAt: new Date().toISOString()
       };
       data.events.push(newEvent);
@@ -263,57 +199,117 @@ export default async function handler(req, res) {
       return;
     }
 
-    // Contact route
-    if (urlPath === '/contact' && method === 'POST') {
-      res.json({ message: "تم إرسال رسالتك بنجاح" });
-      return;
-    }
+    const eventIdMatch = urlPath.match(/^\/events\/(\d+)$/);
+    if (eventIdMatch) {
+      const eventId = parseInt(eventIdMatch[1]);
+      const eventIndex = data.events.findIndex(e => e.id === eventId);
 
-    // Health check route
-    if (urlPath === '/health' && method === 'GET') {
-      res.json({ 
-        status: 'healthy',
-        message: 'Nicaea Heroes API is working!', 
-        method,
-        url,
-        urlPath,
-        timestamp: new Date().toISOString(),
-        dataLoaded: {
-          users: data.users.length,
-          works: data.works.length,
-          news: data.news.length,
-          events: data.events.length
+      if (method === 'PUT') {
+        if (eventIndex === -1) {
+          res.status(404).json({ message: "الفعالية غير موجودة" });
+          return;
         }
-      });
+        
+        const updateData = req.body;
+        data.events[eventIndex] = { ...data.events[eventIndex], ...updateData };
+        res.json(data.events[eventIndex]);
+        return;
+      }
+
+      if (method === 'DELETE') {
+        if (eventIndex === -1) {
+          res.status(404).json({ message: "الفعالية غير موجودة" });
+          return;
+        }
+        
+        data.events.splice(eventIndex, 1);
+        res.json({ message: "تم حذف الفعالية بنجاح" });
+        return;
+      }
+
+      if (method === 'GET') {
+        if (eventIndex === -1) {
+          res.status(404).json({ message: "الفعالية غير موجودة" });
+          return;
+        }
+        res.json(data.events[eventIndex]);
+        return;
+      }
+    }
+
+    // Works operations
+    if (urlPath === '/works' && method === 'POST') {
+      const workData = req.body;
+      const newWork = {
+        id: getNextId(data.works),
+        ...workData,
+        createdAt: new Date().toISOString()
+      };
+      data.works.push(newWork);
+      res.status(201).json(newWork);
       return;
     }
 
-    // Test route  
-    if (urlPath === '/test' && method === 'GET') {
-      res.json({ 
-        message: 'API is working!', 
-        method,
-        url,
-        urlPath,
-        timestamp: new Date().toISOString()
-      });
+    const workIdMatch = urlPath.match(/^\/works\/(\d+)$/);
+    if (workIdMatch) {
+      const workId = parseInt(workIdMatch[1]);
+      const workIndex = data.works.findIndex(w => w.id === workId);
+
+      if (method === 'PUT') {
+        if (workIndex === -1) {
+          res.status(404).json({ message: "العمل غير موجود" });
+          return;
+        }
+        
+        const updateData = req.body;
+        data.works[workIndex] = { ...data.works[workIndex], ...updateData };
+        res.json(data.works[workIndex]);
+        return;
+      }
+
+      if (method === 'DELETE') {
+        if (workIndex === -1) {
+          res.status(404).json({ message: "العمل غير موجود" });
+          return;
+        }
+        
+        data.works.splice(workIndex, 1);
+        res.json({ message: "تم حذف العمل بنجاح" });
+        return;
+      }
+
+      if (method === 'GET') {
+        if (workIndex === -1) {
+          res.status(404).json({ message: "العمل غير موجود" });
+          return;
+        }
+        res.json(data.works[workIndex]);
+        return;
+      }
+    }
+
+    // Contact form
+    if (urlPath === '/contact' && method === 'POST') {
+      const { name, email, subject, message } = req.body;
+      console.log("Contact form submission:", { name, email, subject, message });
+      res.json({ message: "تم إرسال الرسالة بنجاح" });
       return;
     }
 
-    // Default response for unmatched routes
-    console.log('Route not found:', method, urlPath);
-    res.status(404).json({ 
-      message: 'Route not found',
-      method,
-      requestedPath: urlPath,
-      availableRoutes: ['/works', '/stats', '/members', '/news', '/events', '/contact', '/test']
-    });
+    // Health check
+    if (urlPath === '/health') {
+      res.json({ status: 'ok', timestamp: new Date().toISOString() });
+      return;
+    }
 
+    // Not found
+    res.status(404).json({ message: "Route not found" });
+    
   } catch (error) {
     console.error('API Error:', error);
     res.status(500).json({ 
-      message: "حدث خطأ في الخادم",
-      error: error.message
+      message: "Internal server error",
+      error: error.message 
     });
   }
 }
