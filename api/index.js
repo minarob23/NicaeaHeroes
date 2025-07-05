@@ -22,25 +22,38 @@ async function getSchemas() {
 
 // Main API handler
 export default async function handler(req, res) {
-  const { method, url } = req;
-  const storage = await getStorage();
-  const { insertWorkSchema, insertNewsSchema, insertEventSchema, insertUserSchema } = await getSchemas();
-  const { z } = await import('zod');
-  
-  // Parse URL path
-  const urlPath = url.replace('/api', '');
-  
-  // Enable CORS
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
-  if (method === 'OPTIONS') {
-    res.status(200).end();
-    return;
-  }
-
   try {
+    const { method, url } = req;
+    
+    // Add debugging
+    console.log('API Request:', method, url);
+    
+    const storage = await getStorage();
+    const { insertWorkSchema, insertNewsSchema, insertEventSchema, insertUserSchema } = await getSchemas();
+    const { z } = await import('zod');
+    
+    // Parse URL path - handle Vercel routing
+    let urlPath = url;
+    if (url.startsWith('/api')) {
+      urlPath = url.replace('/api', '');
+    }
+    
+    // If path is empty, default to root
+    if (!urlPath || urlPath === '/') {
+      urlPath = '/';
+    }
+    
+    console.log('Parsed URL path:', urlPath);
+    
+    // Enable CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    
+    if (method === 'OPTIONS') {
+      res.status(200).end();
+      return;
+    }
     // Works routes
     if (urlPath === '/works' && method === 'GET') {
       const category = req.query.category;
@@ -145,15 +158,33 @@ export default async function handler(req, res) {
       return;
     }
 
+    // Add a test route for debugging
+    if (urlPath === '/test' && method === 'GET') {
+      res.json({ 
+        message: 'API is working!', 
+        method,
+        url,
+        urlPath,
+        timestamp: new Date().toISOString()
+      });
+      return;
+    }
+
     // Default response for unmatched routes
-    res.status(404).json({ message: 'Route not found' });
+    console.log('Route not found:', method, urlPath);
+    res.status(404).json({ 
+      message: 'Route not found',
+      method,
+      requestedPath: urlPath,
+      availableRoutes: ['/works', '/stats', '/members', '/news', '/events', '/contact', '/test']
+    });
 
   } catch (error) {
     console.error('API Error:', error);
-    if (error instanceof z.ZodError) {
-      res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
-    } else {
-      res.status(500).json({ message: "حدث خطأ في الخادم" });
-    }
+    res.status(500).json({ 
+      message: "حدث خطأ في الخادم",
+      error: error.message,
+      stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    });
   }
 }
