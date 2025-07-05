@@ -108,6 +108,66 @@ export default async function handler(req, res) {
     
     console.log('Parsed URL path:', urlPath);
     
+    // Handle specific ID routes
+    const memberIdMatch = urlPath.match(/^\/members\/(\d+)$/);
+    const workIdMatch = urlPath.match(/^\/works\/(\d+)$/);
+    const newsIdMatch = urlPath.match(/^\/news\/(\d+)$/);
+    const eventIdMatch = urlPath.match(/^\/events\/(\d+)$/);
+    
+    // Member ID routes (DELETE, PUT)
+    if (memberIdMatch) {
+      const memberId = parseInt(memberIdMatch[1]);
+      
+      if (method === 'DELETE') {
+        const memberIndex = data.users.findIndex(user => user.id === memberId);
+        if (memberIndex !== -1) {
+          data.users.splice(memberIndex, 1);
+          res.json({ message: "تم حذف العضو بنجاح" });
+        } else {
+          res.status(404).json({ message: "العضو غير موجود" });
+        }
+        return;
+      }
+      
+      if (method === 'PUT') {
+        const memberIndex = data.users.findIndex(user => user.id === memberId);
+        if (memberIndex !== -1) {
+          data.users[memberIndex] = { ...data.users[memberIndex], ...req.body };
+          res.json(data.users[memberIndex]);
+        } else {
+          res.status(404).json({ message: "العضو غير موجود" });
+        }
+        return;
+      }
+    }
+    
+    // Work ID routes (DELETE, PUT)
+    if (workIdMatch) {
+      const workId = parseInt(workIdMatch[1]);
+      
+      if (method === 'DELETE') {
+        const workIndex = data.works.findIndex(work => work.id === workId);
+        if (workIndex !== -1) {
+          data.works.splice(workIndex, 1);
+          res.json({ message: "تم حذف العمل بنجاح" });
+        } else {
+          res.status(404).json({ message: "العمل غير موجود" });
+        }
+        return;
+      }
+      
+      if (method === 'PUT') {
+        const workIndex = data.works.findIndex(work => work.id === workId);
+        if (workIndex !== -1) {
+          data.works[workIndex] = { ...data.works[workIndex], ...req.body };
+          res.json(data.works[workIndex]);
+        } else {
+          res.status(404).json({ message: "العمل غير موجود" });
+        }
+        return;
+      }
+    }
+    
     // Works routes
     if (urlPath === '/works' && method === 'GET') {
       const worksWithAuthors = data.works.map(work => {
@@ -175,9 +235,32 @@ export default async function handler(req, res) {
       return;
     }
 
+    if (urlPath === '/news' && method === 'POST') {
+      const newNews = {
+        id: data.news.length + 1,
+        ...req.body,
+        isPublished: true,
+        createdAt: new Date().toISOString()
+      };
+      data.news.push(newNews);
+      res.status(201).json(newNews);
+      return;
+    }
+
     // Events routes
     if (urlPath === '/events' && method === 'GET') {
       res.json(data.events);
+      return;
+    }
+
+    if (urlPath === '/events' && method === 'POST') {
+      const newEvent = {
+        id: data.events.length + 1,
+        ...req.body,
+        createdAt: new Date().toISOString()
+      };
+      data.events.push(newEvent);
+      res.status(201).json(newEvent);
       return;
     }
 

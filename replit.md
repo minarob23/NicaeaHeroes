@@ -2,139 +2,118 @@
 
 ## Overview
 
-This is a full-stack web application for "Nicaea Heroes" (كتيبة أبطال نيقية), an Orthodox Christian community work registration system. The platform allows members to register, track, and showcase their charitable works, volunteer activities, and community contributions. The application features Arabic RTL support and is built with a modern tech stack.
+**Nicaea Heroes (كتيبة أبطال نيقية)** is a comprehensive web platform designed specifically for the Orthodox Christian community to register, document, and share charitable and volunteer works. The platform features full Arabic language support with RTL (Right-to-Left) text direction and incorporates Orthodox Christian design elements with a beautiful gold and blue color scheme.
 
 ## System Architecture
 
 ### Frontend Architecture
-- **Framework**: React 18 with TypeScript
-- **Routing**: Wouter (lightweight client-side router)
-- **Styling**: Tailwind CSS with shadcn/ui components
-- **State Management**: TanStack Query for server state
-- **UI Components**: Radix UI primitives with custom shadcn/ui components
-- **Language**: Arabic RTL support with custom Orthodox Christian theme colors
+- **Framework**: React 18+ with TypeScript 5+
+- **Styling**: Tailwind CSS with custom Orthodox-themed colors and Arabic font support
+- **UI Components**: Radix UI component library with shadcn/ui design system
+- **State Management**: TanStack Query (React Query) for server state management
+- **Routing**: Wouter for lightweight client-side routing
+- **Forms**: React Hook Form with Zod validation
+- **Internationalization**: Native Arabic language support with RTL layout
 
 ### Backend Architecture
-- **Runtime**: Node.js with Express.js
-- **Language**: TypeScript (ESM modules)
-- **Database**: PostgreSQL with Drizzle ORM
-- **Database Provider**: Neon Database (serverless PostgreSQL)
-- **API**: REST API with JSON responses
+- **Runtime**: Node.js 20+ with Express.js framework
+- **Language**: TypeScript with ES modules
+- **API Design**: RESTful API architecture
+- **Session Management**: Express-session with PostgreSQL session store
+- **Security**: Comprehensive security headers and CORS protection
 
-### Build System
-- **Frontend Bundler**: Vite
-- **Backend Bundler**: esbuild
-- **Development**: tsx for TypeScript execution
-- **CSS Processing**: PostCSS with Tailwind CSS
+### Database Design
+- **Primary Database**: PostgreSQL with Drizzle ORM
+- **Fallback Storage**: File-based JSON storage for development
+- **Migration System**: Drizzle Kit for database migrations
+- **Schema**: Strongly typed schemas with Zod validation
 
 ## Key Components
 
-### Database Schema
-Located in `shared/schema.ts`:
-- **Users**: Authentication and member profiles
-- **Works**: Charitable and volunteer work records
-- **News**: Community announcements and updates
-- **Events**: Upcoming activities and gatherings
+### Data Models
+1. **Users**: Member profiles with roles (admin, leader, member)
+2. **Works**: Charitable and volunteer work records
+3. **News**: Community announcements and updates  
+4. **Events**: Scheduled activities and gatherings
 
-### API Endpoints
-- **Works Management**: CRUD operations for charitable works
-- **User Management**: Member profiles and authentication
-- **News System**: Community announcements
-- **Events System**: Activity scheduling
-- **Statistics**: Dashboard metrics
+### Core Features
+- **Work Registration**: Complete system for logging charitable activities
+- **Member Management**: User profiles with role-based permissions
+- **News System**: Community announcements with work linking
+- **Event Management**: Activity scheduling and location tracking
+- **Analytics Dashboard**: Statistics and performance metrics
 
-### UI Components
-- **Layout**: Header with navigation, footer with contact info
-- **Forms**: Work registration, contact forms with validation
-- **Cards**: Display components for works, members, news
-- **Theming**: Orthodox Christian color scheme (blue, gold, navy)
+### User Interface
+- **Responsive Design**: Mobile-first approach with responsive breakpoints
+- **Accessibility**: ARIA compliance and keyboard navigation
+- **Animation**: Framer Motion for smooth transitions and interactions
+- **Theme**: Orthodox Christian inspired design with gold/blue color palette
 
 ## Data Flow
 
-1. **Client Request**: React components make API calls using TanStack Query
-2. **Server Processing**: Express routes handle requests and validate data
-3. **Database Operations**: Drizzle ORM manages PostgreSQL interactions
-4. **Response**: JSON data returned to client for UI updates
-5. **State Management**: TanStack Query handles caching and synchronization
+### Client-Server Communication
+1. **Frontend** makes HTTP requests to REST API endpoints
+2. **Express Server** processes requests and validates data
+3. **Storage Layer** (PostgreSQL or file-based) handles data persistence
+4. **Response** sent back to client with JSON data
+
+### State Management
+- **Server State**: Managed by TanStack Query with automatic caching
+- **Local State**: React hooks for component-level state
+- **Form State**: React Hook Form for complex form handling
+
+### Authentication Flow
+- Session-based authentication using express-session
+- PostgreSQL session store for production deployments
+- Role-based access control (admin, leader, member)
 
 ## External Dependencies
 
-### Database
-- **Neon Database**: Serverless PostgreSQL hosting
-- **Drizzle ORM**: Type-safe database queries
-- **Connection**: Environment variable `DATABASE_URL`
+### Frontend Dependencies
+- **@radix-ui/***: Headless UI components for accessibility
+- **@tanstack/react-query**: Server state management
+- **wouter**: Lightweight routing solution
+- **framer-motion**: Animation library
+- **date-fns**: Date manipulation with Arabic locale support
+- **tailwindcss**: Utility-first CSS framework
 
-### UI Libraries
-- **Radix UI**: Accessible component primitives
-- **shadcn/ui**: Pre-built component library
-- **Tailwind CSS**: Utility-first CSS framework
-- **Lucide React**: Icon library
+### Backend Dependencies
+- **express**: Web application framework
+- **drizzle-orm**: Type-safe ORM for PostgreSQL
+- **@neondatabase/serverless**: Serverless PostgreSQL driver
+- **connect-pg-simple**: PostgreSQL session store
+- **zod**: Runtime type validation
 
 ### Development Tools
-- **Replit Integration**: Development environment optimizations
-- **Vite Plugins**: HMR and development tooling
-- **TypeScript**: Full type safety across the stack
+- **TypeScript**: Static type checking
+- **Vite**: Build tool and development server
+- **ESBuild**: JavaScript bundler for production
+- **PostCSS**: CSS processing with Tailwind
 
 ## Deployment Strategy
 
-### Development
-- **Command**: `npm run dev`
-- **Port**: Auto-assigned by Vite
-- **Database**: Neon Database connection
-- **Environment**: NODE_ENV=development
+### Development Environment
+- **Local Development**: Vite dev server with file-based storage fallback
+- **Hot Reload**: Automatic reloading for frontend and backend changes
+- **Type Checking**: Real-time TypeScript validation
 
-### Production
-- **Build**: `npm run build` (Vite + esbuild)
-- **Start**: `npm start`
-- **Output**: `dist/` directory
-- **Database**: Production Neon Database
+### Production Deployment
+- **Platform**: Vercel serverless deployment
+- **Database**: PostgreSQL (Neon Database for serverless)
+- **Build Process**: Vite for frontend, ESBuild for backend
+- **Static Assets**: Served via Vercel's CDN
+- **API Routes**: Deployed as Vercel Functions
 
-### Database Management
-- **Migrations**: `db:push` command with Drizzle Kit
-- **Schema**: Shared between client and server
-- **Type Safety**: Drizzle-zod for runtime validation
-- **Sessions**: PostgreSQL-based session storage
-- **Seeding**: Automatic sample data initialization
-
-### Local and Production Deployment
-- **Development**: Replit environment with PostgreSQL
-- **Local Setup**: Docker Compose with PostgreSQL
-- **Production**: VPS/Dedicated server with PM2
-- **Security**: Session management, CORS, security headers
-- **Monitoring**: PM2 process management
-- **Backups**: Automated PostgreSQL backups
+### Build Configuration
+- **Client Build**: Vite produces optimized static assets
+- **Server Build**: ESBuild creates serverless function
+- **Environment Variables**: Database URLs and session secrets
+- **Asset Optimization**: Automatic compression and caching
 
 ## Changelog
 
-- July 04, 2025. Initial setup and migration completed
-- July 04, 2025. Enhanced member management:
-  - Added edit and delete buttons to member cards
-  - Improved member card visibility with better contrast
-  - Removed "Total Beneficiaries" statistics box
-  - Added work count field to member registration form
-- July 04, 2025. Enhanced news system:
-  - Added ability to link works to news articles
-  - Created comprehensive news creation form with work selection
-- July 04, 2025. Major database migration and production setup:
-  - Migrated from MemStorage to PostgreSQL database
-  - Added database seeding with sample data
-  - Created attractive edit member form with comprehensive UI
-  - Added session management with PostgreSQL storage
-  - Implemented security headers and production configurations
-  - Created Docker and deployment configurations
-  - Added comprehensive deployment documentation
-  - Set up backup and restore scripts
-  - Added intelligent storage fallback system (PostgreSQL → File storage)
-  - Created Windows-specific setup guides and batch scripts
-  - Added file-based storage for offline/local development
-  - Implemented automatic storage selection based on environment
-- July 05, 2025. Vercel deployment preparation:
-  - Migrated project from Replit Agent to standard Replit environment
-  - Created Vercel configuration and serverless API functions
-  - Built unified API handler for all routes in serverless environment
-  - Added proper CORS handling for production deployment
-  - Created comprehensive deployment guide and troubleshooting documentation
-  - Fixed build permissions and optimized for Vercel deployment
+Changelog:
+- July 05, 2025. Initial setup
 
 ## User Preferences
 
