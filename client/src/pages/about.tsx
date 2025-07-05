@@ -63,28 +63,30 @@ export default function About() {
 
   const keyFigures = [
     {
-      name: "الإمبراطور قسطنطين الأول",
-      role: "راعي المجمع",
-      description: "أول إمبراطور روماني مسيحي، دعا إلى المجمع لتوحيد الكنيسة المسيحية",
-      contribution: "توفير الحماية والدعم السياسي للمجمع"
-    },
-    {
-      name: "هوسيوس القرطبي",
-      role: "مندوب الإمبراطور",
-      description: "أسقف قرطبة ومستشار الإمبراطور قسطنطين في الشؤون الكنسية",
-      contribution: "إدارة وتنسيق أعمال المجمع"
-    },
-    {
-      name: "أثناسيوس الإسكندري",
-      role: "المدافع عن الإيمان الأرثوذكسي",
-      description: "شماس الإسكندرية الذي دافع بقوة ضد الآريوسية",
-      contribution: "صياغة الرد اللاهوتي على البدعة الآريوسية"
+      name: "البابا أثناسيوس الرسولي",
+      role: "بطريرك الإسكندرية العشرين وحامي الإيمان الأرثوذكسي",
+      description: "القديس أثناسيوس الكبير (296-373 م)، الملقب بـ'عمود الأرثوذكسية' و'أبي الأرثوذكسية'، وُلد في الإسكندرية وترقى من شماس إلى بطريرك. حضر مجمع نيقية كشماس مرافقاً للبابا ألكسندروس البطريرك التاسع عشر، وكان أصغر المشاركين سناً لكنه أكثرهم تأثيراً في مقاومة الآريوسية.",
+      contribution: "صاغ الأسس اللاهوتية لإثبات ألوهية المسيح، ووضع كتاب 'ضد الآريوسيين' الذي يُعتبر من أعمق النصوص اللاهوتية في تاريخ المسيحية. نُفي خمس مرات من كرسيه دفاعاً عن الإيمان الأرثوذكسي.",
+      details: "عُرف بقوة حجته اللاهوتية وثباته على الحق رغم الاضطهادات المتكررة. ألّف أكثر من 300 رسالة وكتاب، وكان له الفضل الأكبر في انتشار قانون الإيمان النيقاوي. لُقب بـ'المنفي العظيم' لأنه قضى 17 سنة من فترة بطريركيته في المنفى."
     },
     {
       name: "آريوس الإسكندري",
-      role: "مؤسس البدعة الآريوسية",
-      description: "كاهن من الإسكندرية أنكر المساواة الكاملة بين الآب والابن",
-      contribution: "السبب في عقد المجمع لإدانة تعاليمه المنحرفة"
+      role: "مؤسس البدعة الآريوسية المدانة",
+      description: "آريوس (256-336 م) كاهن من كنيسة بوكاليا في الإسكندرية، درس اللاهوت في أنطاكية تحت إشراف لوسيان الأنطاكي. بدأ تعليمه المنحرف حوالي 318 م، مدّعياً أن الابن مخلوق من الآب وأنه 'كان وقت لم يكن فيه'، منكراً بذلك المساواة الجوهرية بين الآب والابن.",
+      contribution: "تعاليمه المنحرفة كانت السبب المباشر في عقد مجمع نيقية المسكوني الأول. أثّرت بدعته على شريحة واسعة من الكهنة والأساقفة، مما خلق انقساماً خطيراً في الكنيسة المسيحية.",
+      details: "كان آريوس خطيباً مفوهاً وشاعراً موهوباً، استخدم الشعر والألحان لنشر تعاليمه المضللة بين العامة. رغم إدانته في نيقية، استمر أتباعه في نشر بدعته لعقود طويلة. توفي في القسطنطينية عام 336 م في ظروف غامضة قبل أن يُعاد إلى الشركة الكنسية كما كان مُخططاً."
+    },
+    {
+      name: "الإمبراطور قسطنطين الأول",
+      role: "راعي المجمع والإمبراطور المسيحي الأول",
+      description: "أول إمبراطور روماني مسيحي، دعا إلى المجمع لتوحيد الكنيسة المسيحية وحل الخلافات العقيدية",
+      contribution: "توفير الحماية والدعم السياسي والمالي للمجمع، ودعوة جميع أساقفة الإمبراطورية للحضور على نفقة الدولة"
+    },
+    {
+      name: "هوسيوس القرطبي",
+      role: "مندوب الإمبراطور ورئيس المجمع",
+      description: "أسقف قرطبة ومستشار الإمبراطور قسطنطين في الشؤون الكنسية، ترأس أعمال المجمع بالنيابة عن الإمبراطور",
+      contribution: "إدارة وتنسيق أعمال المجمع والإشراف على صياغة قانون الإيمان النيقاوي"
     }
   ];
 
@@ -376,15 +378,62 @@ export default function About() {
                 key={index}
                 variants={fadeInUp}
                 whileHover={{ scale: 1.03, y: -5 }}
+                className={index < 2 ? "md:col-span-2" : ""}
               >
-                <Card className="bg-gradient-to-br from-white to-orthodox-cream shadow-xl hover:shadow-2xl transition-all h-full">
+                <Card className={`shadow-xl hover:shadow-2xl transition-all h-full ${
+                  index === 0 ? "bg-gradient-to-br from-orthodox-gold to-yellow-400 text-orthodox-blue" :
+                  index === 1 ? "bg-gradient-to-br from-red-600 to-red-800 text-white" :
+                  "bg-gradient-to-br from-white to-orthodox-cream"
+                }`}>
                   <CardContent className="p-6">
-                    <h3 className="text-xl font-bold text-orthodox-blue mb-2">{figure.name}</h3>
-                    <p className="text-orthodox-gold font-semibold mb-3">{figure.role}</p>
-                    <p className="text-gray-700 mb-4 leading-relaxed">{figure.description}</p>
+                    <h3 className={`text-2xl font-bold mb-2 ${index < 2 ? "" : "text-orthodox-blue"}`}>
+                      {figure.name}
+                    </h3>
+                    <p className={`font-semibold mb-4 ${
+                      index === 0 ? "text-orthodox-blue" :
+                      index === 1 ? "text-red-200" :
+                      "text-orthodox-gold"
+                    }`}>
+                      {figure.role}
+                    </p>
+                    <p className={`mb-4 leading-relaxed ${
+                      index === 0 ? "text-orthodox-navy" :
+                      index === 1 ? "text-red-100" :
+                      "text-gray-700"
+                    }`}>
+                      {figure.description}
+                    </p>
+                    
+                    {(figure as any).details && (
+                      <>
+                        <Separator className="my-4" />
+                        <div className={`p-4 rounded-lg mb-4 ${
+                          index === 0 ? "bg-orthodox-blue bg-opacity-20" :
+                          index === 1 ? "bg-black bg-opacity-20" :
+                          "bg-orthodox-cream"
+                        }`}>
+                          <p className={`text-sm leading-relaxed ${
+                            index === 0 ? "text-orthodox-navy" :
+                            index === 1 ? "text-red-100" :
+                            "text-gray-700"
+                          }`}>
+                            <span className="font-bold">تفاصيل إضافية:</span> {(figure as any).details}
+                          </p>
+                        </div>
+                      </>
+                    )}
+                    
                     <Separator className="my-4" />
-                    <div className="bg-orthodox-cream p-3 rounded-lg">
-                      <p className="text-sm text-orthodox-blue font-medium">
+                    <div className={`p-3 rounded-lg ${
+                      index === 0 ? "bg-orthodox-blue bg-opacity-30" :
+                      index === 1 ? "bg-black bg-opacity-30" :
+                      "bg-orthodox-cream"
+                    }`}>
+                      <p className={`text-sm font-medium ${
+                        index === 0 ? "text-orthodox-navy" :
+                        index === 1 ? "text-red-100" :
+                        "text-orthodox-blue"
+                      }`}>
                         <span className="font-bold">المساهمة:</span> {figure.contribution}
                       </p>
                     </div>

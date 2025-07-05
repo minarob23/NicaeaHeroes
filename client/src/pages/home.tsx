@@ -11,6 +11,8 @@ export default function Home() {
     queryKey: ["/api/stats"],
   });
 
+  const statsData = stats as { totalWorks: number; totalBeneficiaries: number; totalMembers: number } | undefined;
+
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -76,7 +78,7 @@ export default function Home() {
 
         {/* Floating Particles */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(20)].map((_, i) => (
+          {Array.from({ length: 20 }, (_, i) => (
             <motion.div
               key={i}
               className="absolute w-2 h-2 bg-orthodox-gold rounded-full opacity-20"
@@ -347,7 +349,7 @@ export default function Home() {
       </section>
 
       {/* Statistics Section */}
-      {stats && (
+      {statsData && (
         <motion.section 
           className="py-20 bg-gradient-to-br from-gray-50 to-orthodox-cream relative overflow-hidden"
           initial={{ opacity: 0 }}
@@ -438,7 +440,7 @@ export default function Home() {
                       transition={{ duration: 0.8, delay: 0.5 }}
                       whileHover={{ scale: 1.1 }}
                     >
-                      {stats.totalWorks || 0}
+                      {statsData?.totalWorks || 0}
                     </motion.div>
                     <div className="text-pink-100 font-semibold">إجمالي الأعمال</div>
                   </CardContent>
@@ -469,7 +471,7 @@ export default function Home() {
                       transition={{ duration: 0.8, delay: 0.7 }}
                       whileHover={{ scale: 1.1 }}
                     >
-                      {stats.totalBeneficiaries || 0}
+                      {statsData?.totalBeneficiaries || 0}
                     </motion.div>
                     <div className="font-semibold">عدد المستفيدين</div>
                   </CardContent>
@@ -500,7 +502,7 @@ export default function Home() {
                       transition={{ duration: 0.8, delay: 0.9 }}
                       whileHover={{ scale: 1.1 }}
                     >
-                      {stats.totalMembers || 0}
+                      {statsData?.totalMembers || 0}
                     </motion.div>
                     <div className="font-semibold">عدد الأعضاء</div>
                   </CardContent>

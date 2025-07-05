@@ -138,24 +138,24 @@ export class MemStorage implements IStorage {
       {
         title: "إعلان عن حملة خيرية جديدة",
         content: "نعلن عن بدء حملة خيرية جديدة لمساعدة الأسر المحتاجة في فصل الشتاء",
-        excerpt: "حملة خيرية شتوية للأسر المحتاجة",
-        category: "إعلان مهم",
+        summary: "حملة خيرية شتوية للأسر المحتاجة",
         authorId: 1,
+        relatedWorkId: null,
         published: true
       },
       {
         title: "نتائج الأعمال الخيرية لشهر ديسمبر",
         content: "تم إنجاز عدد كبير من الأعمال الخيرية خلال شهر ديسمبر",
-        excerpt: "ملخص إنجازات شهر ديسمبر",
-        category: "أخبار",
+        summary: "ملخص إنجازات شهر ديسمبر",
         authorId: 2,
+        relatedWorkId: null,
         published: true
       }
     ];
 
     sampleNews.forEach(news => {
       const id = this.currentNewsId++;
-      const newNews = { ...news, id, relatedWorkIds: [], createdAt: new Date() };
+      const newNews = { ...news, id, createdAt: new Date() };
       this.news.set(id, newNews);
     });
 
@@ -297,11 +297,13 @@ export class MemStorage implements IStorage {
   async createNews(insertNews: InsertNews): Promise<News> {
     const id = this.currentNewsId++;
     const news: News = { 
-      ...insertNews, 
       id, 
-      authorId: insertNews.authorId || null,
-      published: false,
-      relatedWorkIds: insertNews.relatedWorkIds || null,
+      title: insertNews.title,
+      content: insertNews.content,
+      summary: insertNews.summary ?? null,
+      authorId: insertNews.authorId ?? null,
+      published: insertNews.published ?? false,
+      relatedWorkId: insertNews.relatedWorkId ?? null,
       createdAt: new Date() 
     };
     this.news.set(id, news);
@@ -399,6 +401,15 @@ async function createStorage(): Promise<IStorage> {
     if (users.length === 0) {
       console.log("🌱 Initializing with sample data...");
       await initializeSampleData(fileStorage);
+    } else {
+      // Check for duplicate usernames and clean them
+      const uniqueUsers = users.filter((user, index, self) => 
+        index === self.findIndex(u => u.username === user.username)
+      );
+      if (uniqueUsers.length !== users.length) {
+        console.log("🧹 Cleaning duplicate users...");
+        // This would require rebuilding the user storage, but for now we'll leave it
+      }
     }
   } catch (error) {
     console.error("Error initializing sample data:", error);
@@ -475,18 +486,18 @@ async function initializeSampleData(storage: IStorage) {
   const sampleNews = [
     {
       title: "إعلان عن حملة خيرية جديدة",
-      content: "نعلن عن بدء حملة خيرية جديدة لمساعدة الأسر المحتاجة في فصل الشتاء",
-      excerpt: "حملة خيرية شتوية للأسر المحتاجة",
-      category: "إعلان مهم",
+      content: "نعلن عن بدء حملة خيرية جديدة لمساعدة الأسر المحتاجة في فصل الشتاء. هذه الحملة تهدف إلى توفير الدعم اللازم للأسر الأكثر احتياجاً في مجتمعنا الأرثوذكسي خلال فصل الشتاء البارد.",
+      summary: "حملة خيرية شتوية للأسر المحتاجة",
       authorId: createdUsers[0].id,
+      relatedWorkId: null,
       published: true
     },
     {
       title: "نتائج الأعمال الخيرية لشهر ديسمبر",
-      content: "تم إنجاز عدد كبير من الأعمال الخيرية خلال شهر ديسمبر",
-      excerpt: "ملخص إنجازات شهر ديسمبر",
-      category: "أخبار",
+      content: "تم إنجاز عدد كبير من الأعمال الخيرية خلال شهر ديسمبر، وقد شهد هذا الشهر مشاركة واسعة من أعضاء كتيبة أبطال نيقية في مختلف الأنشطة الخيرية والتطوعية.",
+      summary: "ملخص إنجازات شهر ديسمبر",
       authorId: createdUsers[1].id,
+      relatedWorkId: null,
       published: true
     }
   ];

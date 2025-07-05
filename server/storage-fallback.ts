@@ -58,6 +58,16 @@ export class FileStorage implements IStorage {
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const users = this.readFile<User>(USERS_FILE, []);
+    
+    // Check for existing username or email
+    const existingUser = users.find(u => 
+      u.username === insertUser.username || u.email === insertUser.email
+    );
+    
+    if (existingUser) {
+      throw new Error(`User with username '${insertUser.username}' or email '${insertUser.email}' already exists`);
+    }
+    
     const newUser: User = {
       ...insertUser,
       id: this.getNextId(users),
@@ -165,11 +175,13 @@ export class FileStorage implements IStorage {
   async createNews(insertNews: InsertNews): Promise<News> {
     const news = this.readFile<News>(NEWS_FILE, []);
     const newNews: News = {
-      ...insertNews,
       id: this.getNextId(news),
-      authorId: insertNews.authorId || null,
-      published: false,
-      relatedWorkIds: insertNews.relatedWorkIds || null,
+      title: insertNews.title,
+      content: insertNews.content,
+      summary: insertNews.summary ?? null,
+      authorId: insertNews.authorId ?? null,
+      published: insertNews.published ?? false,
+      relatedWorkId: insertNews.relatedWorkId ?? null,
       createdAt: new Date()
     };
     news.push(newNews);
