@@ -74,29 +74,40 @@ export default function EditMemberForm({ member, onClose }: EditMemberFormProps)
   const queryClient = useQueryClient();
 
   const updateMemberMutation = useMutation({
-    mutationFn: async (data: typeof formData) => {
+    mutationFn: async (data: Partial<Member>) => {
+      console.log(`Updating member ${member.id} with data:`, data);
       const response = await fetch(`/api/members/${member.id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error("فشل في تحديث العضو");
-      return response.json();
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        console.error("Update failed:", errorData);
+        throw new Error(errorData.message || "فشل في تحديث العضو");
+      }
+
+      const result = await response.json();
+      console.log("Update successful:", result);
+      return result;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/members"] });
       queryClient.invalidateQueries({ queryKey: ["/api/stats"] });
+      setIsOpen(false);
       toast({
-        title: "تم التحديث بنجاح",
+        title: "تم التحديث",
         description: "تم تحديث بيانات العضو بنجاح",
       });
-      setIsOpen(false);
-      onClose?.();
     },
-    onError: () => {
+    onError: (error: any) => {
+      console.error("Update mutation error:", error);
       toast({
         title: "خطأ",
-        description: "فشل في تحديث بيانات العضو",
+        description: error.message || "فشل في تحديث العضو",
         variant: "destructive",
       });
     },
