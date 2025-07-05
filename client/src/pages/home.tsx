@@ -559,7 +559,7 @@ export default function Home() {
               >
                 <Button
                   asChild
-                  className="bg-orthodox-blue hover:bg-orthodox-navy text-orthodox-gold font-bold py-4 px-8 rounded-xl text-lg shadow-xl"
+                  className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white font-bold py-4 px-8 rounded-xl text-lg shadow-xl"
                 >
                   <Link href="/works">
                     <Star className="w-5 h-5 ml-2" />
