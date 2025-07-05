@@ -128,6 +128,13 @@ Located in `shared/schema.ts`:
   - Created Windows-specific setup guides and batch scripts
   - Added file-based storage for offline/local development
   - Implemented automatic storage selection based on environment
+- July 05, 2025. Vercel deployment preparation:
+  - Migrated project from Replit Agent to standard Replit environment
+  - Created Vercel configuration and serverless API functions
+  - Built unified API handler for all routes in serverless environment
+  - Added proper CORS handling for production deployment
+  - Created comprehensive deployment guide and troubleshooting documentation
+  - Fixed build permissions and optimized for Vercel deployment
 
 ## User Preferences
 

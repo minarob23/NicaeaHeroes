@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "./vercel-build.sh",
+  "buildCommand": "npx vite build && mkdir -p api/server api/shared && cp -r server/* api/server/ && cp -r shared/* api/shared/",
   "outputDirectory": "dist/client",
   "functions": {
     "api/index.js": {
