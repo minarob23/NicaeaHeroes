@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npx vite build && mkdir -p api/server api/shared && cp -r server/* api/server/ && cp -r shared/* api/shared/",
+  "buildCommand": "npm run build && mkdir -p api/server api/shared && cp -r server/* api/server/ && cp -r shared/* api/shared/",
   "outputDirectory": "dist/public",
   "builds": [
     {
