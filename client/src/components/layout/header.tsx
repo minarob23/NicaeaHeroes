@@ -14,7 +14,6 @@ export default function Header() {
     { name: "الأعضاء", href: "/members" },
     { name: "الأخبار", href: "/news" },
     { name: "عن الموقع", href: "/about" },
-    { name: "اتصل بنا", href: "/contact" },
   ];
 
   const isActive = (href: string) => {

@@ -299,16 +299,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const id = parseInt(req.params.id);
       const updateData = req.body;
       
+      console.log(`Updating member ${id} with data:`, updateData);
+      
       // Validate the update data
       const validatedData = insertUserSchema.partial().parse(updateData);
       
       const updatedUser = await storage.updateUser(id, validatedData);
       if (!updatedUser) {
+        console.log(`Member ${id} not found for update`);
         return res.status(404).json({ message: "العضو غير موجود" });
       }
       
+      console.log(`Member ${id} updated successfully:`, updatedUser);
       res.json(updatedUser);
     } catch (error) {
+      console.error("Error updating member:", error);
       if (error instanceof z.ZodError) {
         res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
       } else {
@@ -320,13 +325,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.delete("/api/members/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
+      console.log(`Attempting to delete member with ID: ${id}`);
+      
       const deleted = await storage.deleteUser(id);
       if (!deleted) {
+        console.log(`Member ${id} not found for deletion`);
         return res.status(404).json({ message: "العضو غير موجود" });
       }
       
+      console.log(`Member ${id} deleted successfully`);
       res.json({ message: "تم حذف العضو بنجاح" });
     } catch (error) {
+      console.error("Error deleting member:", error);
       res.status(500).json({ message: "فشل في حذف العضو" });
     }
   });
@@ -348,17 +358,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Contact form route
-  app.post("/api/contact", async (req, res) => {
-    try {
-      const { name, email, subject, message } = req.body;
-      // In a real application, this would send an email or store the message
-      console.log("Contact form submission:", { name, email, subject, message });
-      res.json({ message: "تم إرسال الرسالة بنجاح" });
-    } catch (error) {
-      res.status(500).json({ message: "فشل في إرسال الرسالة" });
-    }
-  });
+  
 
   const httpServer = createServer(app);
   return httpServer;
