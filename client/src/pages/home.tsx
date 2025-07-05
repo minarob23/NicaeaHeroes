@@ -422,17 +422,17 @@ export default function Home() {
                 whileHover={{ scale: 1.05, y: -10 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-gradient-to-br from-orthodox-blue to-orthodox-navy text-white shadow-2xl border-0 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-orthodox-gold opacity-10"></div>
+                <Card className="bg-gradient-to-br from-purple-600 to-purple-800 text-white shadow-2xl border-0 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-pink-400 opacity-20"></div>
                   <CardContent className="p-8 text-center relative z-10">
                     <motion.div 
                       className="mb-4"
                       animate={pulse}
                     >
-                      <Trophy className="w-12 h-12 text-orthodox-gold mx-auto" />
+                      <Trophy className="w-12 h-12 text-pink-300 mx-auto" />
                     </motion.div>
                     <motion.div 
-                      className="text-4xl font-bold text-orthodox-gold mb-3"
+                      className="text-4xl font-bold text-pink-200 mb-3"
                       initial={{ opacity: 0, scale: 0.5 }}
                       whileInView={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.8, delay: 0.5 }}
@@ -440,7 +440,7 @@ export default function Home() {
                     >
                       {stats.totalWorks || 0}
                     </motion.div>
-                    <div className="text-orthodox-cream font-semibold">إجمالي الأعمال</div>
+                    <div className="text-pink-100 font-semibold">إجمالي الأعمال</div>
                   </CardContent>
                 </Card>
               </motion.div>
@@ -484,14 +484,14 @@ export default function Home() {
                 whileHover={{ scale: 1.05, y: -10 }}
                 viewport={{ once: true }}
               >
-                <Card className="bg-gradient-to-br from-orthodox-light-blue to-blue-500 text-white shadow-2xl border-0 overflow-hidden relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-orthodox-gold opacity-20"></div>
+                <Card className="bg-gradient-to-br from-orange-500 to-red-600 text-white shadow-2xl border-0 overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-yellow-300 opacity-20"></div>
                   <CardContent className="p-8 text-center relative z-10">
                     <motion.div 
                       className="mb-4"
                       animate={pulse}
                     >
-                      <Shield className="w-12 h-12 text-orthodox-gold mx-auto" />
+                      <Shield className="w-12 h-12 text-yellow-200 mx-auto" />
                     </motion.div>
                     <motion.div 
                       className="text-4xl font-bold mb-3"
