@@ -191,7 +191,7 @@ export default function About() {
               مجمع نيقية المسكوني
             </motion.h1>
           </motion.div>
-          
+
           <motion.p 
             className="text-2xl text-gray-700 mb-8 max-w-4xl mx-auto leading-relaxed"
             variants={fadeInUp}
@@ -239,7 +239,7 @@ export default function About() {
           >
             السياق التاريخي والأهمية
           </motion.h2>
-          
+
           <motion.div 
             className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
             variants={staggerContainer}
@@ -308,11 +308,11 @@ export default function About() {
           >
             الخط الزمني للمجمع
           </motion.h2>
-          
+
           <div className="relative">
             {/* Timeline Line */}
             <div className="absolute right-1/2 transform translate-x-1/2 w-1 h-full bg-gradient-to-b from-orthodox-gold to-orthodox-blue"></div>
-            
+
             <div className="space-y-12">
               {nicaeaTimeline.map((event, index) => (
                 <motion.div
@@ -335,7 +335,7 @@ export default function About() {
                       </CardContent>
                     </Card>
                   </div>
-                  
+
                   {/* Timeline Node */}
                   <div className="relative z-10">
                     <motion.div 
@@ -344,7 +344,7 @@ export default function About() {
                       transition={{ duration: 2, repeat: Infinity, delay: index * 0.5 }}
                     />
                   </div>
-                  
+
                   <div className="w-1/2"></div>
                 </motion.div>
               ))}
@@ -366,7 +366,7 @@ export default function About() {
           >
             الشخصيات الرئيسية
           </motion.h2>
-          
+
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-2 gap-8"
             variants={staggerContainer}
@@ -409,7 +409,7 @@ export default function About() {
           >
             الإرث والتأثير الدائم
           </motion.h2>
-          
+
           <motion.div 
             className="grid grid-cols-1 md:grid-cols-2 gap-8"
             variants={staggerContainer}
@@ -420,29 +420,124 @@ export default function About() {
                 variants={fadeInUp}
                 whileHover={{ scale: 1.05, rotateY: 5 }}
               >
-                <Card className="bg-gradient-to-br from-orthodox-blue to-orthodox-navy text-white shadow-2xl h-full">
-                  <CardContent className="p-8 text-center">
-                    <motion.div 
-                      className="mb-6"
-                      animate={floatingAnimation}
-                      transition={{
-                        ...floatingAnimation.transition,
-                        delay: index * 0.3,
-                      }}
-                    >
-                      <item.icon className="w-16 h-16 text-orthodox-gold mx-auto" />
-                    </motion.div>
-                    <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
-                    <p className="text-gray-200 mb-6 leading-relaxed">{item.description}</p>
-                    <div className="bg-orthodox-gold bg-opacity-20 p-4 rounded-lg">
-                      <p className="text-orthodox-gold font-semibold">
-                        <Sparkles className="w-4 h-4 inline ml-2" />
-                        {item.impact}
-                      </p>
+                {/* Vision Card */}
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              viewport={{ once: true }}
+            >
+              <Card className="bg-gradient-to-br from-violet-700 via-fuchsia-600 to-pink-600 bg-opacity-95 backdrop-blur-sm border-violet-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-violet-600 hover:to-pink-500 transition-all duration-500">
+                <CardContent className="p-8">
+                  <motion.div 
+                    className="text-center mb-6"
+                    animate={{scale: [1, 1.2, 1] }}
+                    transition={{duration: 2, repeat: Infinity, delay: 0.3, ease: "easeInOut"}}
+                  >
+                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
+                      <Crown className="w-10 h-10 text-white" />
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                  </motion.div>
+                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
+                    رؤيتنا
+                  </h3>
+                  <p className="text-violet-100 text-lg leading-relaxed text-center">
+                    أن نكون منارة للخير والعطاء في مجتمعنا، نسعى لبناء جيل من الأبطال 
+                    المؤمنين الذين يحملون رسالة المحبة والسلام إلى كل مكان.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Mission Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              viewport={{ once: true }}
+            >
+              <Card className="bg-gradient-to-br from-teal-700 via-cyan-600 to-blue-600 bg-opacity-95 backdrop-blur-sm border-teal-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-teal-600 hover:to-blue-500 transition-all duration-500">
+                <CardContent className="p-8">
+                  <motion.div 
+                    className="text-center mb-6"
+                    animate={{scale: [1, 1.2, 1] }}
+                    transition={{duration: 2, repeat: Infinity, delay: 0.5, ease: "easeInOut"}}
+                  >
+                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
+                      <Cross className="w-10 h-10 text-white" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
+                    مهمتنا
+                  </h3>
+                  <p className="text-teal-100 text-lg leading-relaxed text-center">
+                    نعمل على خدمة المجتمع وتقديم العون للمحتاجين، ونشر قيم المحبة والتسامح 
+                    والعدالة من خلال أعمالنا وخدماتنا المتنوعة.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Message Card */}
+            <motion.div
+              initial={{ opacity: 0, x: -100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              viewport={{ once: true }}
+            >
+              <Card className="bg-gradient-to-br from-green-700 via-lime-600 to-emerald-600 bg-opacity-95 backdrop-blur-sm border-green-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-green-600 hover:to-emerald-500 transition-all duration-500">
+                <CardContent className="p-8">
+                  <motion.div 
+                    className="text-center mb-6"
+                    animate={{scale: [1, 1.2, 1] }}
+                    transition={{duration: 2, repeat: Infinity, delay: 0.7, ease: "easeInOut"}}
+                  >
+                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
+                      <Heart className="w-10 h-10 text-white" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
+                    رسالتنا
+                  </h3>
+                  <p className="text-green-100 text-lg leading-relaxed text-center">
+                    نحمل رسالة الإيمان والرجاء والمحبة، ونسعى لتحقيق العدالة الاجتماعية 
+                    وبناء مجتمع متماسك قائم على الحب والاحترام المتبادل.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+
+            {/* Goals Card */}
+            <motion.div
+              initial={{ opacity: 0, x: 100 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <Card className="bg-gradient-to-br from-red-700 via-rose-600 to-orange-600 bg-opacity-95 backdrop-blur-sm border-red-300 border-opacity-40 shadow-2xl hover:shadow-3xl hover:from-red-600 hover:to-orange-500 transition-all duration-500">
+                <CardContent className="p-8">
+                  <motion.div 
+                    className="text-center mb-6"
+                    animate={{scale: [1, 1.2, 1] }}
+                    transition={{duration: 2, repeat: Infinity, delay: 0.9, ease: "easeInOut"}}
+                  >
+                    <div className="w-20 h-20 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto border-2 border-white border-opacity-30">
+                      <Star className="w-10 h-10 text-white" />
+                    </div>
+                  </motion.div>
+                  <h3 className="text-3xl font-bold text-white font-amiri mb-4 text-center">
+                    أهدافنا
+                  </h3>
+                  <p className="text-red-100 text-lg leading-relaxed text-center">
+                    نهدف إلى تطوير قدرات أعضائنا وتمكينهم من خدمة المجتمع بفعالية، 
+                    وإقامة شراكات قوية مع المؤسسات الأخرى لتحقيق أكبر تأثير إيجابي.
+                  </p>
+                </CardContent>
+              </Card>
+            </motion.div>
+              
+              
+            </motion.div>
             ))}
           </motion.div>
         </motion.section>
