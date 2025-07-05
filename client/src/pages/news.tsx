@@ -1,12 +1,23 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "@/components/ui/alert-dialog";
 import NewsCard from "@/components/news-card";
 import AddEventForm from "@/components/add-event-form";
 import AddNewsForm from "@/components/add-news-form";
-import { Calendar, Clock, MapPin, Newspaper, Bell, Star, Sparkles } from "lucide-react";
+import EditEventForm from "@/components/edit-event-form";
+import { Calendar, Clock, MapPin, Newspaper, Bell, Star, Sparkles, Edit, Trash2 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { useState } from "react";
 
 export default function News() {
+  const [editingEvent, setEditingEvent] = useState<any>(null);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
   const { data: news = [], isLoading } = useQuery({
     queryKey: ["/api/news"],
   });
@@ -17,6 +28,34 @@ export default function News() {
 
   const { data: stats } = useQuery({
     queryKey: ["/api/stats"],
+  });
+
+  const deleteEventMutation = useMutation({
+    mutationFn: async (eventId: number) => {
+      const response = await fetch(`/api/events/${eventId}`, {
+        method: "DELETE",
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to delete event');
+      }
+      
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "تم حذف الفعالية بنجاح",
+        description: "تم حذف الفعالية نهائياً",
+      });
+      queryClient.invalidateQueries({ queryKey: ["/api/events"] });
+    },
+    onError: (error) => {
+      toast({
+        title: "خطأ في حذف الفعالية",
+        description: "حدث خطأ أثناء حذف الفعالية",
+        variant: "destructive",
+      });
+    }
   });
 
   // Animation variants
@@ -185,9 +224,62 @@ export default function News() {
               >
                 <Card className="bg-gradient-to-br from-white to-orthodox-cream shadow-xl hover:shadow-2xl transition-all">
                   <CardContent className="p-6">
-                    <div className="flex items-center mb-4">
-                      <Calendar className="w-6 h-6 text-orthodox-gold mr-3" />
-                      <h3 className="text-xl font-bold text-orthodox-blue">{event.title}</h3>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center">
+                        <Calendar className="w-6 h-6 text-orthodox-gold mr-3" />
+                        <h3 className="text-xl font-bold text-orthodox-blue">{event.title}</h3>
+                      </div>
+                      <div className="flex gap-2">
+                        <Dialog>
+                          <DialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-orthodox-blue hover:bg-orthodox-blue hover:text-white"
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                          </DialogTrigger>
+                          <DialogContent className="max-w-md">
+                            <DialogHeader>
+                              <DialogTitle>تعديل الفعالية</DialogTitle>
+                            </DialogHeader>
+                            <EditEventForm 
+                              event={event}
+                              onClose={() => setEditingEvent(null)}
+                            />
+                          </DialogContent>
+                        </Dialog>
+                        
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              className="text-red-600 hover:bg-red-600 hover:text-white"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>حذف الفعالية</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                هل أنت متأكد من حذف هذه الفعالية؟ هذا الإجراء لا يمكن التراجع عنه.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>إلغاء</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => deleteEventMutation.mutate(event.id)}
+                                className="bg-red-600 hover:bg-red-700"
+                              >
+                                حذف
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
                     </div>
                     <p className="text-gray-600 mb-4">{event.description}</p>
                     <div className="space-y-2 text-sm">

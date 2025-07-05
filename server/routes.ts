@@ -122,6 +122,43 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.put("/api/events/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const updateData = req.body;
+      
+      // Validate the update data
+      const validatedData = insertEventSchema.partial().parse(updateData);
+      
+      const updatedEvent = await storage.updateEvent(id, validatedData);
+      if (!updatedEvent) {
+        return res.status(404).json({ message: "الفعالية غير موجودة" });
+      }
+      
+      res.json(updatedEvent);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+      } else {
+        res.status(500).json({ message: "فشل في تحديث الفعالية" });
+      }
+    }
+  });
+
+  app.delete("/api/events/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const deleted = await storage.deleteEvent(id);
+      if (!deleted) {
+        return res.status(404).json({ message: "الفعالية غير موجودة" });
+      }
+      
+      res.json({ message: "تم حذف الفعالية بنجاح" });
+    } catch (error) {
+      res.status(500).json({ message: "فشل في حذف الفعالية" });
+    }
+  });
+
   // Members routes
   app.get("/api/members", async (req, res) => {
     try {
