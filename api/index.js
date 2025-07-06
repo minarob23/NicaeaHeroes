@@ -1,315 +1,292 @@
 
-// Complete API handler for Vercel deployment
-const data = {
-  stats: {
-    totalWorks: 3,
-    totalBeneficiaries: 105,
-    totalMembers: 77
+import express from "express";
+import cors from "cors";
+import { insertWorkSchema, insertNewsSchema, insertEventSchema, insertUserSchema } from "../shared/schema.js";
+import { z } from "zod";
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Simple in-memory storage for Vercel
+let users = [
+  {
+    id: 1,
+    fullName: "المدير العام",
+    role: "admin",
+    createdAt: new Date()
   },
-  works: [
-    {
-      id: 1,
-      title: "حملة إطعام الأيتام",
-      description: "توزيع وجبات ساخنة على الأطفال الأيتام في دار الرعاية",
-      category: "خدمة اجتماعية",
-      authorId: 1,
-      workDate: "2024-12-15T00:00:00Z",
-      beneficiariesCount: 50,
-      approved: true,
-      createdAt: "2024-01-15T10:00:00Z"
-    },
-    {
-      id: 2,
-      title: "زيارة دار المسنين",
-      description: "قضاء وقت مع كبار السن وتقديم الدعم النفسي",
-      category: "زيارات",
-      authorId: 2,
-      workDate: "2024-12-18T00:00:00Z",
-      beneficiariesCount: 30,
-      approved: true,
-      createdAt: "2024-01-18T10:00:00Z"
-    },
-    {
-      id: 3,
-      title: "توزيع الملابس الشتوية",
-      description: "توزيع ملابس شتوية دافئة على الأسر المحتاجة",
-      category: "مساعدات",
-      authorId: 3,
-      workDate: "2024-12-20T00:00:00Z",
-      beneficiariesCount: 25,
-      approved: true,
-      createdAt: "2024-01-20T10:00:00Z"
-    }
-  ],
-  news: [
-    {
-      id: 1,
-      title: "إعلان عن حملة خيرية جديدة",
-      content: "نعلن عن بدء حملة خيرية جديدة لمساعدة الأسر المحتاجة في فصل الشتاء",
-      summary: "حملة خيرية شتوية للأسر المحتاجة",
-      published: true,
-      authorId: 1,
-      createdAt: "2024-01-10T10:00:00Z"
-    },
-    {
-      id: 2,
-      title: "نتائج الأعمال الخيرية لشهر ديسمبر",
-      content: "تم إنجاز عدد كبير من الأعمال الخيرية خلال شهر ديسمبر",
-      summary: "ملخص إنجازات شهر ديسمبر",
-      published: true,
-      authorId: 2,
-      createdAt: "2024-01-12T10:00:00Z"
-    }
-  ],
-  events: [
-    {
-      id: 1,
-      title: "فعالية خيرية في الحديقة العامة",
-      description: "انضموا إلينا في فعالية خيرية رائعة",
-      eventDate: "2025-02-15T15:00:00Z",
-      location: "الحديقة العامة المركزية",
-      createdAt: "2024-01-30T10:00:00Z"
-    },
-    {
-      id: 2,
-      title: "لقاء شهري للأعضاء",
-      description: "اجتماع شهري لمناقشة الأعمال والمشاريع القادمة",
-      eventDate: "2025-01-15T18:00:00Z",
-      location: "قاعة الكنيسة الرئيسية",
-      createdAt: "2024-01-05T10:00:00Z"
-    }
-  ]
-};
-
-// Utility functions
-function getNextId(array) {
-  return array.length > 0 ? Math.max(...array.map(item => item.id)) + 1 : 1;
-}
-
-function parseUrl(url) {
-  if (url.startsWith('/api')) {
-    return url.replace('/api', '');
+  {
+    id: 2,
+    fullName: "القائد الأول", 
+    role: "leader",
+    createdAt: new Date()
   }
-  return url || '/';
+];
+
+let works = [
+  {
+    id: 1,
+    title: "حملة إطعام الأيتام",
+    description: "توزيع وجبات ساخنة على الأطفال الأيتام",
+    category: "خدمة اجتماعية",
+    authorId: 1,
+    workDate: new Date('2024-12-15'),
+    beneficiariesCount: 50,
+    approved: true,
+    createdAt: new Date()
+  },
+  {
+    id: 2,
+    title: "زيارة دار المسنين",
+    description: "قضاء وقت مع كبار السن",
+    category: "زيارات",
+    authorId: 2,
+    workDate: new Date('2024-12-18'),
+    beneficiariesCount: 30,
+    approved: true,
+    createdAt: new Date()
+  }
+];
+
+let news = [
+  {
+    id: 1,
+    title: "إعلان عن حملة خيرية جديدة",
+    content: "نعلن عن بدء حملة خيرية جديدة لمساعدة الأسر المحتاجة",
+    summary: "حملة خيرية شتوية",
+    authorId: 1,
+    published: true,
+    createdAt: new Date()
+  }
+];
+
+let events = [
+  {
+    id: 1,
+    title: "لقاء شهري للأعضاء",
+    description: "اجتماع شهري لمناقشة الأعمال",
+    eventDate: new Date('2025-01-15'),
+    location: "قاعة الكنيسة",
+    createdAt: new Date()
+  }
+];
+
+let currentUserId = 3;
+let currentWorkId = 3;
+let currentNewsId = 2;
+let currentEventId = 2;
+
+// Helper functions
+function getNextId(items) {
+  return items.length > 0 ? Math.max(...items.map(item => item.id)) + 1 : 1;
 }
 
-// Main API handler
-export default async function handler(req, res) {
+// Members routes
+app.get("/api/members", (req, res) => {
   try {
-    const { method, url } = req;
-    
-    console.log('API Request:', method, url);
-    
-    // Enable CORS
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    
-    if (method === 'OPTIONS') {
-      res.status(200).end();
-      return;
-    }
-    
-    // Parse URL path
-    const urlPath = parseUrl(url);
-    console.log('Parsed URL path:', urlPath);
-    
-    // Route handlers
-    if (urlPath === '/stats' && method === 'GET') {
-      res.json(data.stats);
-      return;
-    }
-
-    if (urlPath === '/works' && method === 'GET') {
-      res.json(data.works);
-      return;
-    }
-
-    if (urlPath === '/news' && method === 'GET') {
-      res.json(data.news);
-      return;
-    }
-
-    if (urlPath === '/events' && method === 'GET') {
-      res.json(data.events);
-      return;
-    }
-
-    // News operations
-    if (urlPath === '/news' && method === 'POST') {
-      const newsData = req.body;
-      const newNews = {
-        id: getNextId(data.news),
-        ...newsData,
-        createdAt: new Date().toISOString()
+    const membersWithStats = users.map(user => {
+      const userWorks = works.filter(work => work.authorId === user.id);
+      const totalBeneficiaries = userWorks.reduce((sum, work) => sum + work.beneficiariesCount, 0);
+      return {
+        id: user.id,
+        fullName: user.fullName,
+        role: user.role,
+        worksCount: userWorks.length,
+        totalBeneficiaries,
+        createdAt: user.createdAt
       };
-      data.news.push(newNews);
-      res.status(201).json(newNews);
-      return;
-    }
-
-    const newsIdMatch = urlPath.match(/^\/news\/(\d+)$/);
-    if (newsIdMatch) {
-      const newsId = parseInt(newsIdMatch[1]);
-      const newsIndex = data.news.findIndex(n => n.id === newsId);
-
-      if (method === 'PUT') {
-        if (newsIndex === -1) {
-          res.status(404).json({ message: "الخبر غير موجود" });
-          return;
-        }
-        
-        const updateData = req.body;
-        data.news[newsIndex] = { ...data.news[newsIndex], ...updateData };
-        res.json(data.news[newsIndex]);
-        return;
-      }
-
-      if (method === 'DELETE') {
-        if (newsIndex === -1) {
-          res.status(404).json({ message: "الخبر غير موجود" });
-          return;
-        }
-        
-        data.news.splice(newsIndex, 1);
-        res.json({ message: "تم حذف الخبر بنجاح" });
-        return;
-      }
-
-      if (method === 'GET') {
-        if (newsIndex === -1) {
-          res.status(404).json({ message: "الخبر غير موجود" });
-          return;
-        }
-        res.json(data.news[newsIndex]);
-        return;
-      }
-    }
-
-    // Events operations
-    if (urlPath === '/events' && method === 'POST') {
-      const eventData = req.body;
-      const newEvent = {
-        id: getNextId(data.events),
-        ...eventData,
-        createdAt: new Date().toISOString()
-      };
-      data.events.push(newEvent);
-      res.status(201).json(newEvent);
-      return;
-    }
-
-    const eventIdMatch = urlPath.match(/^\/events\/(\d+)$/);
-    if (eventIdMatch) {
-      const eventId = parseInt(eventIdMatch[1]);
-      const eventIndex = data.events.findIndex(e => e.id === eventId);
-
-      if (method === 'PUT') {
-        if (eventIndex === -1) {
-          res.status(404).json({ message: "الفعالية غير موجودة" });
-          return;
-        }
-        
-        const updateData = req.body;
-        data.events[eventIndex] = { ...data.events[eventIndex], ...updateData };
-        res.json(data.events[eventIndex]);
-        return;
-      }
-
-      if (method === 'DELETE') {
-        if (eventIndex === -1) {
-          res.status(404).json({ message: "الفعالية غير موجودة" });
-          return;
-        }
-        
-        data.events.splice(eventIndex, 1);
-        res.json({ message: "تم حذف الفعالية بنجاح" });
-        return;
-      }
-
-      if (method === 'GET') {
-        if (eventIndex === -1) {
-          res.status(404).json({ message: "الفعالية غير موجودة" });
-          return;
-        }
-        res.json(data.events[eventIndex]);
-        return;
-      }
-    }
-
-    // Works operations
-    if (urlPath === '/works' && method === 'POST') {
-      const workData = req.body;
-      const newWork = {
-        id: getNextId(data.works),
-        ...workData,
-        createdAt: new Date().toISOString()
-      };
-      data.works.push(newWork);
-      res.status(201).json(newWork);
-      return;
-    }
-
-    const workIdMatch = urlPath.match(/^\/works\/(\d+)$/);
-    if (workIdMatch) {
-      const workId = parseInt(workIdMatch[1]);
-      const workIndex = data.works.findIndex(w => w.id === workId);
-
-      if (method === 'PUT') {
-        if (workIndex === -1) {
-          res.status(404).json({ message: "العمل غير موجود" });
-          return;
-        }
-        
-        const updateData = req.body;
-        data.works[workIndex] = { ...data.works[workIndex], ...updateData };
-        res.json(data.works[workIndex]);
-        return;
-      }
-
-      if (method === 'DELETE') {
-        if (workIndex === -1) {
-          res.status(404).json({ message: "العمل غير موجود" });
-          return;
-        }
-        
-        data.works.splice(workIndex, 1);
-        res.json({ message: "تم حذف العمل بنجاح" });
-        return;
-      }
-
-      if (method === 'GET') {
-        if (workIndex === -1) {
-          res.status(404).json({ message: "العمل غير موجود" });
-          return;
-        }
-        res.json(data.works[workIndex]);
-        return;
-      }
-    }
-
-    // Contact form
-    if (urlPath === '/contact' && method === 'POST') {
-      const { name, email, subject, message } = req.body;
-      console.log("Contact form submission:", { name, email, subject, message });
-      res.json({ message: "تم إرسال الرسالة بنجاح" });
-      return;
-    }
-
-    // Health check
-    if (urlPath === '/health') {
-      res.json({ status: 'ok', timestamp: new Date().toISOString() });
-      return;
-    }
-
-    // Not found
-    res.status(404).json({ message: "Route not found" });
-    
-  } catch (error) {
-    console.error('API Error:', error);
-    res.status(500).json({ 
-      message: "Internal server error",
-      error: error.message 
     });
+    res.json(membersWithStats);
+  } catch (error) {
+    console.error("Error fetching members:", error);
+    res.status(500).json({ message: "فشل في جلب الأعضاء" });
   }
-}
+});
+
+app.post("/api/members", (req, res) => {
+  try {
+    console.log("Creating member with data:", req.body);
+    const validatedUser = insertUserSchema.parse(req.body);
+    
+    const newUser = {
+      ...validatedUser,
+      id: getNextId(users),
+      role: validatedUser.role || 'member',
+      createdAt: new Date()
+    };
+    
+    users.push(newUser);
+    console.log("Member created successfully:", newUser);
+    res.status(201).json(newUser);
+  } catch (error) {
+    console.error("Error creating member:", error);
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "فشل في إنشاء العضو" });
+    }
+  }
+});
+
+app.get("/api/members/:id", (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const user = users.find(u => u.id === id);
+    if (!user) {
+      return res.status(404).json({ message: "العضو غير موجود" });
+    }
+    
+    const userWorks = works.filter(work => work.authorId === user.id);
+    const totalBeneficiaries = userWorks.reduce((sum, work) => sum + work.beneficiariesCount, 0);
+    
+    res.json({
+      ...user,
+      worksCount: userWorks.length,
+      totalBeneficiaries
+    });
+  } catch (error) {
+    res.status(500).json({ message: "فشل في جلب العضو" });
+  }
+});
+
+app.put("/api/members/:id", (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const updateData = req.body;
+    
+    console.log(`Updating member ${id} with data:`, updateData);
+    
+    const validatedData = insertUserSchema.partial().parse(updateData);
+    
+    const userIndex = users.findIndex(u => u.id === id);
+    if (userIndex === -1) {
+      console.log(`Member ${id} not found for update`);
+      return res.status(404).json({ message: "العضو غير موجود" });
+    }
+    
+    users[userIndex] = { ...users[userIndex], ...validatedData };
+    
+    console.log(`Member ${id} updated successfully:`, users[userIndex]);
+    res.json(users[userIndex]);
+  } catch (error) {
+    console.error("Error updating member:", error);
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "فشل في تحديث العضو" });
+    }
+  }
+});
+
+app.delete("/api/members/:id", (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    console.log(`Attempting to delete member with ID: ${id}`);
+    
+    const initialLength = users.length;
+    users = users.filter(user => user.id !== id);
+    
+    if (users.length === initialLength) {
+      console.log(`Member ${id} not found for deletion`);
+      return res.status(404).json({ message: "العضو غير موجود" });
+    }
+    
+    console.log(`Member ${id} deleted successfully`);
+    res.json({ message: "تم حذف العضو بنجاح" });
+  } catch (error) {
+    console.error("Error deleting member:", error);
+    res.status(500).json({ message: "فشل في حذف العضو" });
+  }
+});
+
+// Works routes
+app.get("/api/works", (req, res) => {
+  try {
+    const category = req.query.category;
+    let filteredWorks = category ? works.filter(work => work.category === category) : works;
+    
+    const worksWithAuthors = filteredWorks.map(work => {
+      const author = work.authorId ? users.find(u => u.id === work.authorId) : null;
+      return {
+        ...work,
+        author: author ? { id: author.id, fullName: author.fullName } : null
+      };
+    });
+    
+    res.json(worksWithAuthors);
+  } catch (error) {
+    res.status(500).json({ message: "فشل في جلب الأعمال" });
+  }
+});
+
+app.post("/api/works", (req, res) => {
+  try {
+    const validatedWork = insertWorkSchema.parse(req.body);
+    const newWork = {
+      ...validatedWork,
+      id: getNextId(works),
+      authorId: validatedWork.authorId || null,
+      beneficiariesCount: validatedWork.beneficiariesCount || 0,
+      images: validatedWork.images || null,
+      approved: false,
+      createdAt: new Date()
+    };
+    works.push(newWork);
+    res.status(201).json(newWork);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({ message: "بيانات غير صحيحة", errors: error.errors });
+    } else {
+      res.status(500).json({ message: "فشل في إنشاء العمل" });
+    }
+  }
+});
+
+// News routes
+app.get("/api/news", (req, res) => {
+  try {
+    const publishedNews = news.filter(item => item.published);
+    const newsWithAuthors = publishedNews.map(article => {
+      const author = article.authorId ? users.find(u => u.id === article.authorId) : null;
+      return {
+        ...article,
+        author: author ? { id: author.id, fullName: author.fullName } : null
+      };
+    });
+    res.json(newsWithAuthors);
+  } catch (error) {
+    res.status(500).json({ message: "فشل في جلب الأخبار" });
+  }
+});
+
+// Events routes
+app.get("/api/events", (req, res) => {
+  try {
+    const now = new Date();
+    const upcomingEvents = events.filter(event => new Date(event.eventDate) > now);
+    res.json(upcomingEvents);
+  } catch (error) {
+    res.status(500).json({ message: "فشل في جلب الفعاليات" });
+  }
+});
+
+// Statistics route - Fixed to count actual users
+app.get("/api/stats", (req, res) => {
+  try {
+    const totalBeneficiaries = works.reduce((sum, work) => sum + work.beneficiariesCount, 0);
+    
+    res.json({
+      totalWorks: works.length,
+      totalBeneficiaries,
+      totalMembers: users.length // This now correctly counts actual users
+    });
+  } catch (error) {
+    res.status(500).json({ message: "فشل في جلب الإحصائيات" });
+  }
+});
+
+// Export for Vercel
+export default app;

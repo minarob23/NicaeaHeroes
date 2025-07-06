@@ -191,6 +191,31 @@ export default function Members() {
             </Card>
           </motion.div>
 
+          {/* Total Members */}
+          <motion.div
+            variants={cardVariants}
+            whileHover={{ scale: 1.05, y: -10 }}
+          >
+            <Card className="bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-2xl border-0 overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white opacity-20"></div>
+              <CardContent className="p-8 relative z-10">
+                <div className="flex items-center justify-between mb-4">
+                  <Users className="w-12 h-12 text-white" />
+                  <Shield className="w-8 h-8 text-white opacity-60" />
+                </div>
+                <motion.div 
+                  className="text-4xl font-bold mb-2"
+                  initial={{ opacity: 0, scale: 0.5 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.8, delay: 0.7 }}
+                >
+                  {members.length}
+                </motion.div>
+                <div className="text-white font-semibold">إجمالي الأعضاء</div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
           {/* Total Beneficiaries */}
           <motion.div
             variants={cardVariants}

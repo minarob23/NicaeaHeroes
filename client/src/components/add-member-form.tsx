@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useQueryClient, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,7 +70,7 @@ export default function AddMemberForm() {
           </CardContent>
         </Card>
       </DialogTrigger>
-      
+
       <DialogContent className="max-w-md mx-auto bg-gradient-to-br from-white to-orthodox-cream border-0 shadow-2xl">
         <DialogHeader className="relative">
           <DialogTitle className="text-orthodox-blue flex items-center gap-2 text-xl font-bold">
@@ -79,7 +78,7 @@ export default function AddMemberForm() {
             إضافة عضو جديد
           </DialogTitle>
         </DialogHeader>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           <div>
             <Label htmlFor="fullName" className="flex items-center gap-2 text-orthodox-navy font-semibold">
@@ -96,7 +95,7 @@ export default function AddMemberForm() {
             />
           </div>
 
-          
+
 
           <div>
             <Label htmlFor="role" className="flex items-center gap-2 text-orthodox-navy font-semibold">
