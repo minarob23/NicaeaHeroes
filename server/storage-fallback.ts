@@ -59,14 +59,7 @@ export class FileStorage implements IStorage {
   async createUser(insertUser: InsertUser): Promise<User> {
     const users = this.readFile<User>(USERS_FILE, []);
 
-    // Check for existing username or email
-    const existingUser = users.find(u => 
-      u.username === insertUser.username || u.email === insertUser.email
-    );
-
-    if (existingUser) {
-      throw new Error(`User with username '${insertUser.username}' or email '${insertUser.email}' already exists`);
-    }
+    
 
     const newUser: User = {
       ...insertUser,

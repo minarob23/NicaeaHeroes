@@ -5,7 +5,6 @@ import { eq } from "drizzle-orm";
 export interface IStorage {
   // User operations
   getUser(id: number): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
   updateUser(id: number, user: Partial<User>): Promise<User | undefined>;
   deleteUser(id: number): Promise<boolean>;
@@ -65,24 +64,15 @@ export class MemStorage implements IStorage {
     // Sample Users
     const sampleUsers = [
       {
-        username: "john_doe",
-        password: "password123",
         fullName: "يوحنا بطرس",
-        email: "john@nicaea.org",
         role: "leader"
       },
       {
-        username: "mary_k",
-        password: "password123", 
         fullName: "مريم كرم",
-        email: "mary@nicaea.org",
         role: "member"
       },
       {
-        username: "peter_a",
-        password: "password123",
-        fullName: "بطرس أنطونيوس", 
-        email: "peter@nicaea.org",
+        fullName: "بطرس أنطونيوس",
         role: "member"
       }
     ];
@@ -187,11 +177,7 @@ export class MemStorage implements IStorage {
     return this.users.get(id);
   }
 
-  async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
-  }
+  
 
   async createUser(insertUser: InsertUser): Promise<User> {
     const id = this.currentUserId++;
@@ -422,24 +408,15 @@ async function initializeSampleData(storage: IStorage) {
   // Create sample users
   const sampleUsers = [
     {
-      username: "john_peter",
-      password: "password123",
       fullName: "يوحنا بطرس",
-      email: "john@nicaea.org",
       role: "leader"
     },
     {
-      username: "mary_joseph", 
-      password: "password123",
       fullName: "مريم يوسف",
-      email: "mary@nicaea.org",
       role: "admin"
     },
     {
-      username: "michael_david",
-      password: "password123", 
       fullName: "ميخائيل داود",
-      email: "michael@nicaea.org",
       role: "member"
     }
   ];

@@ -9,8 +9,6 @@ import { motion } from "framer-motion";
 interface Member {
   id: number;
   fullName: string;
-  username: string;
-  email: string;
   role: string;
   worksCount: number;
   totalBeneficiaries: number;
