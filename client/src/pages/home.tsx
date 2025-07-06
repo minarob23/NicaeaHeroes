@@ -177,181 +177,112 @@ export default function Home() {
               </motion.p>
             </motion.div>
 
-            {/* Redesigned Motto Section */}
+            {/* Animated Motto Card */}
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 1.5 }}
-              className="mb-8"
+              whileHover={{ scale: 1.02 }}
             >
-              {/* Main Hero Text */}
-              <div className="bg-gradient-to-r from-purple-900 via-blue-900 to-purple-900 rounded-3xl p-8 mb-6 shadow-2xl border border-orthodox-gold border-opacity-30">
-                <motion.div 
-                  className="text-center space-y-6"
-                  variants={staggerContainer}
-                  initial="hidden"
-                  animate="visible"
-                >
-                  <motion.h2 
-                    className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-yellow-400 via-orange-400 to-red-400 bg-clip-text text-transparent"
-                    variants={fadeInUp}
-                    animate={{
-                      backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                    }}
-                  >
-                    إحنا أبطال نيقية... واقفين ومافيش زَيّنا!
-                  </motion.h2>
-                  
-                  <motion.p 
-                    className="text-xl text-emerald-300 font-semibold"
-                    variants={fadeInUp}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    ماسكين فإيمانّا... وعايشين على عهد آبائنا
-                  </motion.p>
-                  
-                  <motion.p 
-                    className="text-xl text-cyan-300 font-semibold"
-                    variants={fadeInUp}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    مهما تهبّ ريح، إحنا صخرة ما بتهزش
-                  </motion.p>
-                  
-                  <motion.p 
-                    className="text-lg text-pink-300"
-                    variants={fadeInUp}
-                  >
-                    ونقولها بجرأة وصوت عالي:
-                  </motion.p>
-                  
+              <Card className="bg-white bg-opacity-10 backdrop-blur-sm border-orthodox-gold border-opacity-30 mb-8 shadow-2xl">
+                <CardContent className="p-8">
                   <motion.div 
-                    className="bg-black bg-opacity-30 rounded-2xl p-6 border-2 border-orthodox-gold"
-                    variants={fadeInUp}
-                    animate={pulse}
+                    className="space-y-6 text-white text-lg leading-relaxed"
+                    variants={staggerContainer}
+                    initial="hidden"
+                    animate="visible"
                   >
-                    <p className="text-2xl md:text-3xl font-bold text-orthodox-gold">
+                    <motion.div 
+                      className="flex items-center justify-center space-x-reverse space-x-3"
+                      variants={fadeInUp}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <Cross className="w-6 h-6 text-orthodox-gold" />
+                      <span>
+                        <strong>إحنا أبطال نيقية... واقفين ومافيش زَيّنا!</strong>
+                      </span>
+                    </motion.div>
+
+                    <motion.div 
+                      className="flex items-center justify-center space-x-reverse space-x-3"
+                      variants={fadeInUp}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <Scroll className="w-6 h-6 text-orthodox-gold" />
+                      <span>ماسكين فإيمانّا... وعايشين على عهد آبائنا</span>
+                    </motion.div>
+
+                    <motion.div 
+                      className="flex items-center justify-center space-x-reverse space-x-3"
+                      variants={fadeInUp}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <Flame className="w-6 h-6 text-orthodox-gold" />
+                      <span>مهما تهبّ ريح، إحنا صخرة ما بتهزش</span>
+                    </motion.div>
+
+                    <motion.div 
+                      className="flex items-center justify-center space-x-reverse space-x-3"
+                      variants={fadeInUp}
+                      whileHover={{ scale: 1.05 }}
+                    >
+                      <Shield className="w-6 h-6 text-orthodox-gold" />
+                      <span>ونقولها بجرأة وصوت عالي:</span>
+                    </motion.div>
+
+                    <motion.p 
+                      className="text-orthodox-gold text-2xl font-bold"
+                      variants={fadeInUp}
+                      animate={pulse}
+                    >
                       "نؤمن... نثبت... ونكمل للآخر!"
-                    </p>
-                  </motion.div>
-                </motion.div>
-              </div>
+                    </motion.p>
 
-              {/* Three Cards Layout */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <motion.div 
-                  className="bg-gradient-to-br from-red-600 to-pink-600 rounded-2xl p-6 text-center shadow-xl"
-                  variants={fadeInUp}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  animate={{
-                    boxShadow: [
-                      "0 10px 30px rgba(220, 38, 127, 0.3)",
-                      "0 20px 40px rgba(220, 38, 127, 0.5)",
-                      "0 10px 30px rgba(220, 38, 127, 0.3)"
-                    ]
-                  }}
-                  transition={{
-                    boxShadow: { duration: 2, repeat: Infinity }
-                  }}
-                >
-                  <div className="text-4xl mb-3">💥</div>
-                  <p className="text-white font-bold text-lg">
-                    ما بنقلدش... ما بنتهاونش
-                  </p>
-                </motion.div>
-
-                <motion.div 
-                  className="bg-gradient-to-br from-yellow-500 to-orange-500 rounded-2xl p-6 text-center shadow-xl"
-                  variants={fadeInUp}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  animate={{
-                    boxShadow: [
-                      "0 10px 30px rgba(245, 158, 11, 0.3)",
-                      "0 20px 40px rgba(245, 158, 11, 0.5)",
-                      "0 10px 30px rgba(245, 158, 11, 0.3)"
-                    ]
-                  }}
-                  transition={{
-                    boxShadow: { duration: 2, repeat: Infinity, delay: 0.5 }
-                  }}
-                >
-                  <div className="text-4xl mb-3">🕯</div>
-                  <p className="text-white font-bold text-lg">
-                    وسط الظلمة، إحنا النور
-                  </p>
-                </motion.div>
-
-                <motion.div 
-                  className="bg-gradient-to-br from-emerald-600 to-teal-600 rounded-2xl p-6 text-center shadow-xl"
-                  variants={fadeInUp}
-                  whileHover={{ scale: 1.05, y: -5 }}
-                  animate={{
-                    boxShadow: [
-                      "0 10px 30px rgba(16, 185, 129, 0.3)",
-                      "0 20px 40px rgba(16, 185, 129, 0.5)",
-                      "0 10px 30px rgba(16, 185, 129, 0.3)"
-                    ]
-                  }}
-                  transition={{
-                    boxShadow: { duration: 2, repeat: Infinity, delay: 1 }
-                  }}
-                >
-                  <div className="text-4xl mb-3">🚫</div>
-                  <p className="text-white font-bold text-lg">
-                    لا عقيدتنا للبيع... ولا قلبنا هيتغير!
-                  </p>
-                </motion.div>
-              </div>
-
-              {/* Final Call to Action */}
-              <motion.div 
-                className="bg-gradient-to-r from-indigo-800 via-purple-800 to-indigo-800 rounded-3xl p-8 text-center shadow-2xl border-2 border-orthodox-gold"
-                variants={fadeInUp}
-                animate={{
-                  backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-                }}
-                transition={{
-                  duration: 4,
-                  repeat: Infinity,
-                }}
-              >
-                <motion.div
-                  animate={float}
-                  className="space-y-4"
-                >
-                  <div className="text-5xl mb-4">🎶</div>
-                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-yellow-400 to-orange-400 bg-clip-text text-transparent">
-                    إحنا أبطال... إحنا نور...
-                  </p>
-                  <p className="text-2xl md:text-3xl font-bold text-orthodox-gold">
-                    كملوا بينا المشوار!
-                  </p>
-                  
-                  {/* Decorative Stars */}
-                  <div className="flex justify-center space-x-4 mt-6">
-                    {[...Array(5)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        animate={{
-                          rotate: [0, 360],
-                          scale: [1, 1.3, 1],
-                        }}
-                        transition={{
-                          duration: 2,
-                          repeat: Infinity,
-                          delay: i * 0.2,
-                        }}
+                    <motion.div 
+                      className="border-t border-orthodox-gold border-opacity-30 pt-6 mt-6 space-y-2"
+                      variants={fadeInUp}
+                    >
+                      <motion.p 
+                        className="text-orthodox-cream"
+                        whileHover={{ scale: 1.05, color: "#FDE68A" }}
                       >
-                        <Star className="w-6 h-6 text-orthodox-gold" />
-                      </motion.div>
-                    ))}
-                  </div>
-                </motion.div>
-              </motion.div>
+                        💥 ما بنقلدش... ما بنتهاونش
+                      </motion.p>
+                      <motion.p 
+                        className="text-orthodox-cream"
+                        whileHover={{ scale: 1.05, color: "#FDE68A" }}
+                      >
+                        🕯 وسط الظلمة، إحنا النور
+                      </motion.p>
+                      <motion.p 
+                        className="text-orthodox-cream"
+                        whileHover={{ scale: 1.05, color: "#FDE68A" }}
+                      >
+                        🚫 لا عقيدتنا للبيع... ولا قلبنا هيتغير!
+                      </motion.p>
+                    </motion.div>
+
+                    <motion.div 
+                      className="border-t border-orthodox-gold border-opacity-30 pt-6 mt-6"
+                      variants={fadeInUp}
+                    >
+                      <motion.p 
+                        className="text-orthodox-gold text-2xl font-bold"
+                        animate={float}
+                      >
+                        🎶 إحنا أبطال... إحنا نور...
+                      </motion.p>
+                      <motion.p 
+                        className="text-orthodox-gold text-2xl font-bold"
+                        animate={float}
+                        transition={{ ...float.transition, delay: 0.5 }}
+                      >
+                        كملوا بينا المشوار!
+                      </motion.p>
+                    </motion.div>
+                  </motion.div>
+                </CardContent>
+              </Card>
             </motion.div>
 
             {/* Animated Action Buttons */}
