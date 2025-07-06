@@ -187,7 +187,7 @@ export default function Home() {
               <Card className="bg-white bg-opacity-10 backdrop-blur-sm border-orthodox-gold border-opacity-30 mb-8 shadow-2xl">
                 <CardContent className="p-8">
                   <motion.div 
-                    className="space-y-6 text-emerald-300 text-lg leading-relaxed"
+                    className="space-y-6 text-white text-lg leading-relaxed"
                     variants={staggerContainer}
                     initial="hidden"
                     animate="visible"
@@ -243,20 +243,20 @@ export default function Home() {
                       variants={fadeInUp}
                     >
                       <motion.p 
-                        className="text-emerald-200"
-                        whileHover={{ scale: 1.05, color: "#6ee7b7" }}
+                        className="text-orthodox-cream"
+                        whileHover={{ scale: 1.05, color: "#FDE68A" }}
                       >
                         💥 ما بنقلدش... ما بنتهاونش
                       </motion.p>
                       <motion.p 
-                        className="text-emerald-200"
-                        whileHover={{ scale: 1.05, color: "#6ee7b7" }}
+                        className="text-orthodox-cream"
+                        whileHover={{ scale: 1.05, color: "#FDE68A" }}
                       >
                         🕯 وسط الظلمة، إحنا النور
                       </motion.p>
                       <motion.p 
-                        className="text-emerald-200"
-                        whileHover={{ scale: 1.05, color: "#6ee7b7" }}
+                        className="text-orthodox-cream"
+                        whileHover={{ scale: 1.05, color: "#FDE68A" }}
                       >
                         🚫 لا عقيدتنا للبيع... ولا قلبنا هيتغير!
                       </motion.p>
@@ -267,13 +267,13 @@ export default function Home() {
                       variants={fadeInUp}
                     >
                       <motion.p 
-                        className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent text-2xl font-bold"
+                        className="text-orthodox-gold text-2xl font-bold"
                         animate={float}
                       >
                         🎶 إحنا أبطال... إحنا نور...
                       </motion.p>
                       <motion.p 
-                        className="bg-gradient-to-r from-emerald-400 to-teal-300 bg-clip-text text-transparent text-2xl font-bold"
+                        className="text-orthodox-gold text-2xl font-bold"
                         animate={float}
                         transition={{ ...float.transition, delay: 0.5 }}
                       >
