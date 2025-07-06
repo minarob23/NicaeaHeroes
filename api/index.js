@@ -114,7 +114,7 @@ function getNextId(array) {
 
 function updateStats() {
   data.stats.totalWorks = data.works.length;
-  data.stats.totalBeneficiaries = data.works.reduce((sum, work) => sum + work.beneficiariesCount, 0);
+  data.stats.totalBeneficiaries = data.members.reduce((sum, member) => sum + (member.totalBeneficiaries || 0), 0);
   data.stats.totalMembers = data.members.length;
 }
 

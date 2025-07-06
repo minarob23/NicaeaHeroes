@@ -63,7 +63,8 @@ export default function EditMemberForm({ member, onClose }: EditMemberFormProps)
   const [formData, setFormData] = useState({
     fullName: member.fullName,
     role: member.role,
-    worksCount: member.worksCount || 0
+    worksCount: member.worksCount || 0,
+    totalBeneficiaries: member.totalBeneficiaries || 0
   });
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -252,6 +253,21 @@ export default function EditMemberForm({ member, onClose }: EditMemberFormProps)
                       />
                     </div>
                   </div>
+                   <div className="space-y-2">
+                      <Label htmlFor="totalBeneficiaries" className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                        <Users className="w-4 h-4 text-green-600" />
+                        عدد المستفيدين
+                      </Label>
+                      <Input
+                        id="totalBeneficiaries"
+                        type="number"
+                        value={formData.totalBeneficiaries}
+                        onChange={(e) => setFormData({ ...formData, totalBeneficiaries: parseInt(e.target.value) || 0 })}
+                        className="border-gray-300 focus:border-green-500 focus:ring-green-500"
+                        placeholder="0"
+                        min="0"
+                      />
+                    </div>
 
                   <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
                     <Button
