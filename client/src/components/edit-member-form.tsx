@@ -62,7 +62,8 @@ const roleConfig = {
 export default function EditMemberForm({ member, onClose }: EditMemberFormProps) {
   const [formData, setFormData] = useState({
     fullName: member.fullName,
-    role: member.role
+    role: member.role,
+    worksCount: member.worksCount || 0
   });
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -214,7 +215,7 @@ export default function EditMemberForm({ member, onClose }: EditMemberFormProps)
                     />
                   </div>
 
-                  <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                       <Label htmlFor="role" className="flex items-center gap-2 text-sm font-medium text-gray-700">
                         <Shield className="w-4 h-4 text-red-600" />
@@ -235,7 +236,21 @@ export default function EditMemberForm({ member, onClose }: EditMemberFormProps)
                       </Select>
                     </div>
 
-                    
+                    <div className="space-y-2">
+                      <Label htmlFor="worksCount" className="flex items-center gap-2 text-sm font-medium text-gray-700">
+                        <Award className="w-4 h-4 text-orange-600" />
+                        عدد الأعمال
+                      </Label>
+                      <Input
+                        id="worksCount"
+                        type="number"
+                        value={formData.worksCount}
+                        onChange={(e) => setFormData({ ...formData, worksCount: parseInt(e.target.value) || 0 })}
+                        className="border-gray-300 focus:border-orange-500 focus:ring-orange-500"
+                        placeholder="0"
+                        min="0"
+                      />
+                    </div>
                   </div>
 
                   <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">

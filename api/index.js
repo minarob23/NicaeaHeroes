@@ -112,8 +112,8 @@ app.post("/api/members", (req, res) => {
     const validatedUser = insertUserSchema.parse(req.body);
     
     const newUser = {
+      ...validatedUser,
       id: getNextId(users),
-      fullName: validatedUser.fullName,
       role: validatedUser.role || 'member',
       createdAt: new Date()
     };
@@ -167,9 +167,7 @@ app.put("/api/members/:id", (req, res) => {
       return res.status(404).json({ message: "العضو غير موجود" });
     }
     
-    // Update user with only valid fields
-    if (validatedData.fullName !== undefined) users[userIndex].fullName = validatedData.fullName;
-    if (validatedData.role !== undefined) users[userIndex].role = validatedData.role;
+    users[userIndex] = { ...users[userIndex], ...validatedData };
     
     console.log(`Member ${id} updated successfully:`, users[userIndex]);
     res.json(users[userIndex]);
@@ -275,7 +273,7 @@ app.get("/api/events", (req, res) => {
   }
 });
 
-// Statistics route - Fixed to count actual users consistently
+// Statistics route - Fixed to count actual users
 app.get("/api/stats", (req, res) => {
   try {
     const totalBeneficiaries = works.reduce((sum, work) => sum + work.beneficiariesCount, 0);
@@ -283,7 +281,7 @@ app.get("/api/stats", (req, res) => {
     res.json({
       totalWorks: works.length,
       totalBeneficiaries,
-      totalMembers: users.length // Always use users.length for consistency
+      totalMembers: users.length // This now correctly counts actual users
     });
   } catch (error) {
     res.status(500).json({ message: "فشل في جلب الإحصائيات" });

@@ -12,7 +12,9 @@ import { UserPlus, User, Shield, Trophy, Users, X } from "lucide-react";
 export default function AddMemberForm() {
   const [formData, setFormData] = useState({
     fullName: "",
-    role: "member"
+    role: "member",
+    worksCount: 0,
+    totalBeneficiaries: 0
   });
   const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
@@ -37,7 +39,9 @@ export default function AddMemberForm() {
       });
       setFormData({ 
         fullName: "", 
-        role: "member"
+        role: "member", 
+        worksCount: 0,
+        totalBeneficiaries: 0
       });
       setIsOpen(false);
     },
@@ -111,7 +115,37 @@ export default function AddMemberForm() {
             </Select>
           </div>
 
-          
+          <div>
+            <Label htmlFor="worksCount" className="flex items-center gap-2 text-orthodox-navy font-semibold">
+              <Trophy className="w-4 h-4" />
+              عدد الأعمال
+            </Label>
+            <Input
+              id="worksCount"
+              type="number"
+              min="0"
+              value={formData.worksCount}
+              onChange={(e) => setFormData({ ...formData, worksCount: parseInt(e.target.value) || 0 })}
+              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
+              placeholder="عدد الأعمال المنجزة"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="totalBeneficiaries" className="flex items-center gap-2 text-orthodox-navy font-semibold">
+              <Users className="w-4 h-4" />
+              عدد المستفيدين
+            </Label>
+            <Input
+              id="totalBeneficiaries"
+              type="number"
+              min="0"
+              value={formData.totalBeneficiaries}
+              onChange={(e) => setFormData({ ...formData, totalBeneficiaries: parseInt(e.target.value) || 0 })}
+              className="mt-1 border-orthodox-gold/30 focus:border-orthodox-gold"
+              placeholder="إجمالي عدد المستفيدين"
+            />
+          </div>
 
           <div className="flex gap-3 pt-4">
             <Button 
