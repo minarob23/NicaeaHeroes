@@ -122,8 +122,8 @@ export default function Members() {
           transition={{ duration: 0.8 }}
         >
           <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="p-4 bg-gradient-to-br from-orthodox-blue to-orthodox-navy rounded-full shadow-2xl">
-              <Users className="w-12 h-12 text-white" />
+            <div className="p-4 bg-gradient-to-br from-orthodox-blue to-orthodox-navy rounded-full shadow-2xl border-4 border-orthodox-gold">
+              <Users className="w-12 h-12 text-orthodox-gold" />
             </div>
             <h1 className="text-5xl font-bold text-orthodox-blue">
               أعضاء الفريق
