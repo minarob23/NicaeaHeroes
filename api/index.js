@@ -6,6 +6,32 @@ const data = {
     totalBeneficiaries: 105,
     totalMembers: 77
   },
+  members: [
+    {
+      id: 1,
+      fullName: "المدير العام",
+      role: "admin",
+      worksCount: 1,
+      totalBeneficiaries: 50,
+      createdAt: "2024-01-01T00:00:00.000Z"
+    },
+    {
+      id: 2,
+      fullName: "القائد الأول",
+      role: "leader",
+      worksCount: 1,
+      totalBeneficiaries: 30,
+      createdAt: "2024-01-15T00:00:00.000Z"
+    },
+    {
+      id: 3,
+      fullName: "عضو نشط",
+      role: "member",
+      worksCount: 1,
+      totalBeneficiaries: 25,
+      createdAt: "2024-02-01T00:00:00.000Z"
+    }
+  ],
   works: [
     {
       id: 1,
@@ -86,6 +112,12 @@ function getNextId(array) {
   return array.length > 0 ? Math.max(...array.map(item => item.id)) + 1 : 1;
 }
 
+function updateStats() {
+  data.stats.totalWorks = data.works.length;
+  data.stats.totalBeneficiaries = data.works.reduce((sum, work) => sum + work.beneficiariesCount, 0);
+  data.stats.totalMembers = data.members.length;
+}
+
 function parseUrl(url) {
   if (url.startsWith('/api')) {
     return url.replace('/api', '');
@@ -132,6 +164,11 @@ export default async function handler(req, res) {
 
     if (urlPath === '/events' && method === 'GET') {
       res.json(data.events);
+      return;
+    }
+
+    if (urlPath === '/members' && method === 'GET') {
+      res.json(data.members);
       return;
     }
 
@@ -246,6 +283,7 @@ export default async function handler(req, res) {
         createdAt: new Date().toISOString()
       };
       data.works.push(newWork);
+      updateStats();
       res.status(201).json(newWork);
       return;
     }
@@ -263,6 +301,7 @@ export default async function handler(req, res) {
         
         const updateData = req.body;
         data.works[workIndex] = { ...data.works[workIndex], ...updateData };
+        updateStats();
         res.json(data.works[workIndex]);
         return;
       }
@@ -274,6 +313,7 @@ export default async function handler(req, res) {
         }
         
         data.works.splice(workIndex, 1);
+        updateStats();
         res.json({ message: "تم حذف العمل بنجاح" });
         return;
       }
@@ -284,6 +324,62 @@ export default async function handler(req, res) {
           return;
         }
         res.json(data.works[workIndex]);
+        return;
+      }
+    }
+
+    // Members operations
+    if (urlPath === '/members' && method === 'POST') {
+      const memberData = req.body;
+      const newMember = {
+        id: getNextId(data.members),
+        ...memberData,
+        worksCount: memberData.worksCount || 0,
+        totalBeneficiaries: memberData.totalBeneficiaries || 0,
+        createdAt: new Date().toISOString()
+      };
+      data.members.push(newMember);
+      updateStats();
+      res.status(201).json(newMember);
+      return;
+    }
+
+    const memberIdMatch = urlPath.match(/^\/members\/(\d+)$/);
+    if (memberIdMatch) {
+      const memberId = parseInt(memberIdMatch[1]);
+      const memberIndex = data.members.findIndex(m => m.id === memberId);
+
+      if (method === 'PUT') {
+        if (memberIndex === -1) {
+          res.status(404).json({ message: "العضو غير موجود" });
+          return;
+        }
+        
+        const updateData = req.body;
+        data.members[memberIndex] = { ...data.members[memberIndex], ...updateData };
+        updateStats();
+        res.json(data.members[memberIndex]);
+        return;
+      }
+
+      if (method === 'DELETE') {
+        if (memberIndex === -1) {
+          res.status(404).json({ message: "العضو غير موجود" });
+          return;
+        }
+        
+        data.members.splice(memberIndex, 1);
+        updateStats();
+        res.json({ message: "تم حذف العضو بنجاح" });
+        return;
+      }
+
+      if (method === 'GET') {
+        if (memberIndex === -1) {
+          res.status(404).json({ message: "العضو غير موجود" });
+          return;
+        }
+        res.json(data.members[memberIndex]);
         return;
       }
     }
