@@ -184,7 +184,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 1.5 }}
               whileHover={{ scale: 1.02 }}
             >
-              <Card className="bg-gradient-to-br from-orthodox-gold/20 to-orthodox-gold/10 backdrop-blur-sm border-orthodox-gold border-opacity-50 mb-8 shadow-2xl">
+              <Card className="bg-white bg-opacity-10 backdrop-blur-sm border-orthodox-gold border-opacity-30 mb-8 shadow-2xl">
                 <CardContent className="p-8">
                   <motion.div 
                     className="space-y-6 text-white text-lg leading-relaxed"
