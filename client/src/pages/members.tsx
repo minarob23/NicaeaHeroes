@@ -125,7 +125,7 @@ export default function Members() {
             <div className="p-4 bg-gradient-to-br from-orthodox-blue to-orthodox-navy rounded-full shadow-2xl">
               <Users className="w-12 h-12 text-white" />
             </div>
-            <h1 className="text-5xl font-bold bg-gradient-to-r from-orthodox-blue to-orthodox-navy bg-clip-text text-transparent">
+            <h1 className="text-5xl font-bold text-orthodox-blue">
               أعضاء الفريق
             </h1>
           </div>
@@ -196,12 +196,12 @@ export default function Members() {
             variants={cardVariants}
             whileHover={{ scale: 1.05, y: -10 }}
           >
-            <Card className="bg-gradient-to-br from-orthodox-gold to-yellow-500 text-orthodox-blue shadow-2xl border-0 overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white opacity-20"></div>
+            <Card className="bg-gradient-to-br from-green-500 to-green-700 text-white shadow-2xl border-0 overflow-hidden relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-white opacity-10"></div>
               <CardContent className="p-8 relative z-10">
                 <div className="flex items-center justify-between mb-4">
-                  <Heart className="w-12 h-12 text-orthodox-blue" />
-                  <Crown className="w-8 h-8 text-orthodox-blue opacity-60" />
+                  <Heart className="w-12 h-12 text-green-100" />
+                  <Crown className="w-8 h-8 text-green-100 opacity-60" />
                 </div>
                 <motion.div 
                   className="text-4xl font-bold mb-2"
@@ -211,7 +211,7 @@ export default function Members() {
                 >
                   {members.reduce((total, member) => total + (member.totalBeneficiaries || 0), 0)}
                 </motion.div>
-                <div className="text-orthodox-blue font-semibold">إجمالي المستفيدين</div>
+                <div className="text-green-100 font-semibold">إجمالي المستفيدين</div>
               </CardContent>
             </Card>
           </motion.div>
